@@ -1,6 +1,6 @@
 # Strava Telegram Auth
 
-App that is ready to be deployed on Heroku
+App that is ready to be deployed on Heroku. Attach a Postgres Dabatase to the app and create the table before using the app.
 
 ### Create table
 
