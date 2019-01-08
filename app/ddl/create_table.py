@@ -5,7 +5,7 @@ import psycopg2
 from app.common.constants_and_variables import AppVariables, AppConstants
 
 
-class CreateTableAthleteStats(object):
+class CreateTable(object):
 
     def __init__(self):
         self.app_variables = AppVariables()
@@ -21,5 +21,5 @@ class CreateTableAthleteStats(object):
 
 
 if __name__ == '__main__':
-    create_table_athlete_stats = CreateTableAthleteStats()
+    create_table_athlete_stats = CreateTable()
     create_table_athlete_stats.create_table()
