@@ -22,6 +22,7 @@ class AppConstants(object):
                           "SET access_token='{access_token}', refresh_token='{refresh_token}', expires_at={expires_at}, telegram_username='{telegram_username}', updated=now()" \
                           "where athlete_id={athlete_id}"
     API_TOKEN_EXCHANGE = 'https://www.strava.com/oauth/token'
+    API_WEBHOOK_UPDATE_STATS = "https://strava-telegram-webhooks-stage.herokuapp.com/stats/{athlete_id}"
 
 
 class AppVariables(object):

@@ -100,6 +100,7 @@ def registration(code):
                     add_or_update_into_table(query, access_info, telegram_username)
                     logging.info("Updated athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
 
+                requests.post(app_constants.API_WEBHOOK_UPDATE_STATS.format(athlete_id=access_info['athlete_id']))
                 return render_template('successful.html', page_title=app_variables.page_title)
 
             except Exception:
