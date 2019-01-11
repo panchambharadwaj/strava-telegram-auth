@@ -36,3 +36,4 @@ class AppVariables(object):
     database_url = os.environ.get('DATABASE_URL')
     app_debug = os.environ.get('APP_DEBUG')
     app_host = os.environ.get('APP_HOST')
+    bot_url = os.environ.get('BOT_URL')

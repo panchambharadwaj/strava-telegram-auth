@@ -6,9 +6,10 @@ import traceback
 
 import psycopg2
 import requests
-from app.common.constants_and_variables import AppVariables, AppConstants
 from flask import Flask, request, redirect, render_template, url_for, flash
 from wtforms import Form, TextAreaField, validators
+
+from app.common.constants_and_variables import AppVariables, AppConstants
 
 app_variables = AppVariables()
 app_constants = AppConstants()
@@ -101,7 +102,8 @@ def registration(code):
                     logging.info("Updated athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
 
                 requests.post(app_constants.API_WEBHOOK_UPDATE_STATS.format(athlete_id=access_info['athlete_id']))
-                return render_template('successful.html', page_title=app_variables.page_title)
+                return render_template('successful.html', page_title=app_variables.page_title,
+                                       bot_url=app_variables.bot_url)
 
             except Exception:
                 logging.exception("Exception: {exception_traceback}".format(exception_traceback=traceback.format_exc()))
