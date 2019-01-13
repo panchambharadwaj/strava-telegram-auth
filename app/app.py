@@ -34,6 +34,8 @@ def token_exchange(code):
     access_info = dict()
 
     access_info['athlete_id'] = response['athlete']['id']
+    access_info['name'] = "{first_name} {last_name}".format(first_name=response['athlete']['firstname'],
+                                                            last_name=response['athlete']['lastname'])
     access_info['access_token'] = response['access_token']
     access_info['refresh_token'] = response['refresh_token']
     access_info['expires_at'] = response['expires_at']
@@ -57,6 +59,7 @@ def add_or_update_into_table(query, access_info, telegram_username):
     cursor = database_connection.cursor()
     cursor.execute(query.format(
         athlete_id=access_info['athlete_id'],
+        name=access_info['name'],
         access_token=access_info['access_token'],
         refresh_token=access_info['refresh_token'],
         expires_at=access_info['expires_at'],
