@@ -1,6 +1,5 @@
 WTForms==2.2.1
 requests==2.21.0
-psycopg2-binary==2.7.6.1
+psycopg2_binary==2.7.6.1
 gunicorn==19.9.0
-pycryptodome==3.7.2
 Flask==1.0.2
