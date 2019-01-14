@@ -25,8 +25,10 @@ class AppConstants(object):
     QUERY_UPDATE_VALUES = "UPDATE strava_telegram_bot " \
                           "SET access_token='{access_token}', name='{name}', refresh_token='{refresh_token}', expires_at={expires_at}, telegram_username='{telegram_username}', updated=now()" \
                           "where athlete_id={athlete_id}"
+
     API_TOKEN_EXCHANGE = 'https://www.strava.com/oauth/token'
     API_WEBHOOK_UPDATE_STATS = "https://strava-telegram-webhooks-stage.herokuapp.com/stats/{athlete_id}"
+    API_TELEGRAM_SEND_MESSAGE = "https://api.telegram.org/bot{bot_token}/sendMessage"
 
 
 class AppVariables(object):
@@ -41,3 +43,6 @@ class AppVariables(object):
     app_debug = os.environ.get('APP_DEBUG')
     app_host = os.environ.get('APP_HOST')
     bot_url = os.environ.get('BOT_URL')
+    telegram_bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
+    shadow_mode = os.environ.get('SHADOW_MODE')
+    shadow_mode_chat_id = os.environ.get('SHADOW_MODE_CHAT_ID')
