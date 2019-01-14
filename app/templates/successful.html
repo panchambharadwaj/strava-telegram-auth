@@ -19,6 +19,8 @@
     <div class="row align-items-center justify-content-center ">
         <div class="col-md-4 ">
             <center><h4>Thank you for registering!</h4></center>
+            <center>Give us a minute or two while we fetch your Strava data</center>
+            <center><a href="{{ bot_url }}">Click here to visit our Telegram Bot</a></center>
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
             {% for message in messages %}
