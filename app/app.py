@@ -73,55 +73,78 @@ def add_or_update_into_table(query, access_info, telegram_username):
 
 @app.route("/")
 def home():
-    return "Welcome. Visit /register to register."
+    try:
+        return "Welcome. Visit /register to register."
+    except Exception:
+        message = "Something went wrong. Exception: {exception}".format(exception=traceback.format_exc())
+        logging.error(message)
+        shadow_mode.send_message(message)
 
 
 @app.route("/register")
 def register():
-    return redirect(app_variables.strava_auth_url.format(client_id=app_variables.client_id,
-                                                         redirect_uri=app_variables.redirect_uri), code=302)
+    try:
+        return redirect(app_variables.strava_auth_url.format(client_id=app_variables.client_id,
+                                                             redirect_uri=app_variables.redirect_uri), code=302)
+    except Exception:
+        message = "Something went wrong. Exception: {exception}".format(exception=traceback.format_exc())
+        logging.error(message)
+        shadow_mode.send_message(message)
 
 
 @app.route("/auth")
 def auth_callback():
-    code = request.args.get('code')
-    return redirect(url_for('registration', code=code))
+    try:
+        code = request.args.get('code')
+        return redirect(url_for('registration', code=code))
+    except Exception:
+        message = "Something went wrong. Exception: {exception}".format(exception=traceback.format_exc())
+        logging.error(message)
+        shadow_mode.send_message(message)
 
 
 @app.route("/registration/<code>", methods=['GET', 'POST'])
 def registration(code):
-    form = ReusableForm(request.form)
-    if request.method == 'POST':
-        telegram_username = request.form['telegram_username'].strip()
+    try:
+        form = ReusableForm(request.form)
+        if request.method == 'POST':
+            telegram_username = request.form['telegram_username'].strip()
 
-        if form.validate():
-            try:
-                access_info = token_exchange(code)
-                if not athlete_exists(access_info['athlete_id']):
-                    query = app_constants.QUERY_INSERT_VALUES
-                    add_or_update_into_table(query, access_info, telegram_username)
-                    logging.info("Added new athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
-                else:
-                    query = app_constants.QUERY_UPDATE_VALUES
-                    add_or_update_into_table(query, access_info, telegram_username)
-                    logging.info("Updated athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
+            if form.validate():
+                try:
+                    access_info = token_exchange(code)
+                    if not athlete_exists(access_info['athlete_id']):
+                        query = app_constants.QUERY_INSERT_VALUES
+                        add_or_update_into_table(query, access_info, telegram_username)
+                        logging.info("Added new athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
+                    else:
+                        query = app_constants.QUERY_UPDATE_VALUES
+                        add_or_update_into_table(query, access_info, telegram_username)
+                        logging.info("Updated athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
 
-                requests.post(app_constants.API_WEBHOOK_UPDATE_STATS.format(athlete_id=access_info['athlete_id']))
-                shadow_mode.send_message("{athlete_name} registered with Telegram username {telegram_username}".format(
-                    athlete_name=access_info['name'],
-                    telegram_username=telegram_username))
-                return render_template('successful.html', page_title=app_variables.page_title,
-                                       bot_url=app_variables.bot_url)
+                    requests.post(app_constants.API_WEBHOOK_UPDATE_STATS.format(athlete_id=access_info['athlete_id']))
+                    shadow_mode.send_message(
+                        "{athlete_name} registered with Telegram username {telegram_username}".format(
+                            athlete_name=access_info['name'],
+                            telegram_username=telegram_username))
+                    return render_template('successful.html', page_title=app_variables.page_title,
+                                           bot_url=app_variables.bot_url)
 
-            except Exception:
-                logging.exception("Exception: {exception_traceback}".format(exception_traceback=traceback.format_exc()))
-                shadow_mode.send_message("Failed to register for Telegram username {telegram_username}".format(
-                    telegram_username=telegram_username))
-                return render_template('failed.html', page_title=app_variables.page_title)
-        else:
-            flash('Telegram Username is Mandatory', 'Error')
+                except Exception:
+                    logging.exception(
+                        "Exception: {exception_traceback}".format(exception_traceback=traceback.format_exc()))
+                    shadow_mode.send_message("Failed to register for Telegram username {telegram_username}".format(
+                        telegram_username=telegram_username))
+                    return render_template('failed.html', page_title=app_variables.page_title)
+            else:
+                flash('Telegram Username is Mandatory', 'Error')
 
-    return render_template('registration.html', form=form, page_title=app_variables.page_title)
+        return render_template('registration.html', form=form, page_title=app_variables.page_title)
+
+    except Exception:
+        message = "Something went wrong. Exception: {exception}".format(exception=traceback.format_exc())
+        logging.error(message)
+        shadow_mode.send_message(message)
 
 
 if __name__ == '__main__' and __package__ is None:
