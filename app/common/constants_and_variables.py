@@ -7,7 +7,8 @@ class AppConstants(object):
     QUERY_CREATE_TABLE = '''create table strava_telegram_bot(
         id serial NOT NULL,
         athlete_id INTEGER PRIMARY KEY,
-        name VARCHAR DEFAULT NULL,
+        name VARCHAR NOT NULL,
+        email VARCHAR NOT NULL,
         access_token VARCHAR NOT NULL,
         refresh_token VARCHAR NOT NULL,
         expires_at INTEGER NOT NULL,
@@ -20,13 +21,19 @@ class AppConstants(object):
         );'''
 
     QUERY_ATHLETE_EXISTS = "select count(*) from strava_telegram_bot where athlete_id={athlete_id}"
-    QUERY_INSERT_VALUES = "INSERT INTO strava_telegram_bot (athlete_id, name, access_token, refresh_token, expires_at, telegram_username, created) " \
-                          "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', {expires_at}, '{telegram_username}', current_timestamp)"
+
+    QUERY_INSERT_VALUES = "INSERT INTO strava_telegram_bot (athlete_id, name, email, access_token, refresh_token, " \
+                          "expires_at, telegram_username, created) " \
+                          "VALUES ({athlete_id}, '{name}', '{email}', '{access_token}', '{refresh_token}', " \
+                          "{expires_at}, '{telegram_username}', current_timestamp)"
+
     QUERY_UPDATE_VALUES = "UPDATE strava_telegram_bot " \
-                          "SET access_token='{access_token}', name='{name}', refresh_token='{refresh_token}', expires_at={expires_at}, telegram_username='{telegram_username}', updated=now()" \
+                          "SET name='{name}', email='{email}', access_token='{access_token}', " \
+                          "refresh_token='{refresh_token}', expires_at={expires_at}, " \
+                          "telegram_username='{telegram_username}', updated=now()" \
                           "where athlete_id={athlete_id}"
 
-    API_TOKEN_EXCHANGE = 'https://www.strava.com/oauth/token'
+    API_TOKEN_EXCHANGE = "https://www.strava.com/oauth/token"
     API_WEBHOOK_UPDATE_STATS = "https://strava-telegram-webhooks-stage.herokuapp.com/stats/{athlete_id}"
     API_TELEGRAM_SEND_MESSAGE = "https://api.telegram.org/bot{bot_token}/sendMessage"
 
