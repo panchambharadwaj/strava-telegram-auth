@@ -1,0 +1,18 @@
+{
+  "name": "Strava Telegram Auth",
+  "description": "",
+  "success_url": "/",
+  "env": {},
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "Free"
+    }
+  },
+  "image": "heroku/python",
+  "addons": [
+    {
+      "plan": "heroku-postgresql:hobby-dev"
+    }
+  ]
+}

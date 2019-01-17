@@ -6,6 +6,7 @@ import traceback
 import psycopg2
 import requests
 from flask import Flask, request, redirect, render_template, url_for, flash
+from scout_apm.flask import ScoutApm
 from wtforms import Form, TextAreaField, validators
 
 from app.common.constants_and_variables import AppVariables, AppConstants
@@ -18,6 +19,12 @@ shadow_mode = ShadowMode()
 app = Flask(__name__)
 app.config.from_object(__name__)
 app.config['SECRET_KEY'] = app_variables.secret_key
+
+ScoutApm(app)
+
+app.config['SCOUT_MONITOR'] = app_variables.scout_monitor
+app.config['SCOUT_KEY'] = app_variables.scout_key
+app.config['SCOUT_NAME'] = app_variables.scout_name
 
 
 class ReusableForm(Form):

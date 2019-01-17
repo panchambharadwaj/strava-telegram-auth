@@ -52,3 +52,6 @@ class AppVariables(object):
     telegram_bot_token = os.environ.get('TELEGRAM_BOT_TOKEN')
     shadow_mode = os.environ.get('SHADOW_MODE')
     shadow_mode_chat_id = os.environ.get('SHADOW_MODE_CHAT_ID')
+    scout_monitor = os.environ.get('SCOUT_MONITOR')
+    scout_key = os.environ.get('SCOUT_KEY')
+    scout_name = os.environ.get('SCOUT_NAME')
