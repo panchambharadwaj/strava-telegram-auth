@@ -77,6 +77,11 @@ def add_or_update_into_table(query, access_info, telegram_username):
     database_connection.close()
 
 
+@app.route('/favicon.ico')
+def hello():
+    return redirect(url_for('static', filename='favicon.ico'), code=302)
+
+
 @app.route("/")
 def home():
     try:
@@ -154,6 +159,7 @@ def registration(code):
 
 
 if __name__ == '__main__' and __package__ is None:
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                        level=logging.os.environ.get('LOGGING_LEVEL'))
     logger = logging.getLogger(__name__)
     app.run(host=app_variables.app_host, port=app_variables.app_port, debug=app_variables.app_debug)
