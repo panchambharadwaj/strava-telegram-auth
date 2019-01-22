@@ -135,7 +135,7 @@ def registration(code):
                         add_or_update_into_table(query, access_info, telegram_username)
                         logging.info("Updated athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
 
-                    requests.post(app_constants.API_WEBHOOK_UPDATE_STATS.format(athlete_id=access_info['athlete_id']))
+                    requests.post(app_variables.api_webhook_stats.format(athlete_id=access_info['athlete_id']))
                     shadow_mode.send_message(
                         "{athlete_name} registered with Telegram username {telegram_username}".format(
                             athlete_name=access_info['name'],
