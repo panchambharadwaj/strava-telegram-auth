@@ -38,6 +38,8 @@ class AppConstants(object):
 
 
 class AppVariables(object):
+    crypt_key_length = os.environ.get('CRYPT_KEY_LENGTH')
+    crypt_key = os.environ.get('CRYPT_KEY')
     client_id = os.environ.get('CLIENT_ID')
     client_secret = os.environ.get('CLIENT_SECRET')
     strava_auth_url = os.environ.get('STRAVA_AUTH_URL')
