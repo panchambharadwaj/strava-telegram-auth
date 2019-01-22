@@ -9,12 +9,14 @@ from flask import Flask, request, redirect, render_template, url_for, flash
 from scout_apm.flask import ScoutApm
 from wtforms import Form, TextAreaField, validators
 
+from app.common.aes_cipher import AESCipher
 from app.common.constants_and_variables import AppVariables, AppConstants
 from app.common.shadow_mode import ShadowMode
 
 app_variables = AppVariables()
 app_constants = AppConstants()
 shadow_mode = ShadowMode()
+aes_cipher = AESCipher(app_variables.crypt_key_length, app_variables.crypt_key)
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -68,8 +70,8 @@ def add_or_update_into_table(query, access_info, telegram_username):
     cursor.execute(query.format(
         athlete_id=access_info['athlete_id'],
         name=access_info['name'],
-        access_token=access_info['access_token'],
-        refresh_token=access_info['refresh_token'],
+        access_token=aes_cipher.encrypt(access_info['access_token']),
+        refresh_token=aes_cipher.encrypt(access_info['refresh_token']),
         expires_at=access_info['expires_at'],
         telegram_username=telegram_username))
     cursor.close()

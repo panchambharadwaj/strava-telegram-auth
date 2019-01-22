@@ -7,11 +7,12 @@ class AppConstants(object):
     QUERY_CREATE_TABLE = '''create table strava_telegram_bot(
         id serial NOT NULL,
         athlete_id INTEGER PRIMARY KEY,
+        telegram_username VARCHAR NOT NULL,
         name VARCHAR NOT NULL,
         access_token VARCHAR NOT NULL,
         refresh_token VARCHAR NOT NULL,
         expires_at INTEGER NOT NULL,
-        telegram_username VARCHAR NOT NULL,
+        active BOOLEAN NOT NULL DEFAULT TRUE,
         strava_data json DEFAULT NULL,
         update_indoor_ride BOOLEAN NOT NULL DEFAULT FALSE,
         update_indoor_ride_data json DEFAULT NULL,
@@ -38,6 +39,8 @@ class AppConstants(object):
 
 
 class AppVariables(object):
+    crypt_key_length = int(os.environ.get('CRYPT_KEY_LENGTH'))
+    crypt_key = os.environ.get('CRYPT_KEY')
     client_id = os.environ.get('CLIENT_ID')
     client_secret = os.environ.get('CLIENT_SECRET')
     strava_auth_url = os.environ.get('STRAVA_AUTH_URL')

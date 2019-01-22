@@ -4,3 +4,4 @@ psycopg2-binary==2.7.6.1
 gunicorn==19.9.0
 Flask==1.0.2
 scout-apm==2.0.1
+pycryptodome==3.7.2
