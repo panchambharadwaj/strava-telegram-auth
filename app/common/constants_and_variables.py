@@ -34,7 +34,6 @@ class AppConstants(object):
                           "where athlete_id={athlete_id}"
 
     API_TOKEN_EXCHANGE = "https://www.strava.com/oauth/token"
-    API_WEBHOOK_UPDATE_STATS = "https://strava-telegram-webhooks-stage.herokuapp.com/stats/{athlete_id}"
     API_TELEGRAM_SEND_MESSAGE = "https://api.telegram.org/bot{bot_token}/sendMessage"
 
 
@@ -58,3 +57,4 @@ class AppVariables(object):
     scout_monitor = os.environ.get('SCOUT_MONITOR')
     scout_key = os.environ.get('SCOUT_KEY')
     scout_name = os.environ.get('SCOUT_NAME')
+    api_webhook_stats = os.environ.get('UPDATE_STATS_WEBHOOK_API')
