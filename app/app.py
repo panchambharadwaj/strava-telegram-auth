@@ -124,6 +124,7 @@ def registration(code):
             telegram_username = request.form['telegram_username'].strip()
 
             if form.validate():
+                telegram_username = telegram_username[1:] if telegram_username.startswith('@') else telegram_username
                 try:
                     access_info = token_exchange(code)
                     if not athlete_exists(access_info['athlete_id']):
