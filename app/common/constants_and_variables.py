@@ -16,6 +16,8 @@ class AppConstants(object):
         strava_data json DEFAULT NULL,
         update_indoor_ride BOOLEAN NOT NULL DEFAULT FALSE,
         update_indoor_ride_data json DEFAULT NULL,
+        chat_id VARCHAR DEFAULT NULL,
+        enable_activity_summary BOOLEAN NOT NULL DEFAULT FALSE,
         created timestamp NOT NULL,
         updated timestamp default current_timestamp NOT NULL
         );'''
