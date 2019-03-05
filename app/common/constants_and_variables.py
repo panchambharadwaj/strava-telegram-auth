@@ -38,6 +38,8 @@ class AppConstants(object):
     API_TOKEN_EXCHANGE = "https://www.strava.com/oauth/token"
     API_TELEGRAM_SEND_MESSAGE = "https://api.telegram.org/bot{bot_token}/sendMessage"
 
+    MESSAGE_NEW_REGISTRATION = "{athlete_name} registered with Telegram username `{telegram_username}`"
+
 
 class AppVariables(object):
     crypt_key_length = int(os.environ.get('CRYPT_KEY_LENGTH'))

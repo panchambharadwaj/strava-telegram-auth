@@ -139,9 +139,8 @@ def registration(code):
                     requests.post(app_variables.api_webhook_stats.format(athlete_id=access_info['athlete_id']))
 
                     shadow_mode.send_message(
-                        "{athlete_name} registered with Telegram username {telegram_username}".format(
-                            athlete_name=access_info['name'],
-                            telegram_username=telegram_username))
+                        app_constants.MESSAGE_NEW_REGISTRATION.format(athlete_name=access_info['name'],
+                                                                      telegram_username=telegram_username))
                     return render_template('successful.html', page_title=app_variables.page_title,
                                            bot_url=app_variables.bot_url)
 
