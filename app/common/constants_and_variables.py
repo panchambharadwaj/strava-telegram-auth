@@ -25,14 +25,14 @@ class AppConstants(object):
     QUERY_ATHLETE_EXISTS = "select count(*) from strava_telegram_bot where athlete_id={athlete_id}"
 
     QUERY_INSERT_VALUES = "INSERT INTO strava_telegram_bot (athlete_id, name, access_token, refresh_token, " \
-                          "expires_at, telegram_username, created) " \
+                          "expires_at, telegram_username, active, created) " \
                           "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
-                          "{expires_at}, '{telegram_username}', current_timestamp)"
+                          "{expires_at}, '{telegram_username}', true, current_timestamp)"
 
     QUERY_UPDATE_VALUES = "UPDATE strava_telegram_bot " \
                           "SET name='{name}', access_token='{access_token}', " \
                           "refresh_token='{refresh_token}', expires_at={expires_at}, " \
-                          "telegram_username='{telegram_username}', updated=now()" \
+                          "telegram_username='{telegram_username}', active=true, updated=now()" \
                           "where athlete_id={athlete_id}"
 
     API_TOKEN_EXCHANGE = "https://www.strava.com/oauth/token"
