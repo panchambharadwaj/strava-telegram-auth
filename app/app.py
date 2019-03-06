@@ -3,12 +3,11 @@
 import logging
 import traceback
 
-import psycopg2
-import requests
 from flask import Flask, request, redirect, render_template, url_for, flash
 from scout_apm.flask import ScoutApm
 from wtforms import Form, TextAreaField, validators
 
+from app.clients.strava_telegram_webhooks import StravaTelegramWebhooks
 from app.common.aes_cipher import AESCipher
 from app.common.constants_and_variables import AppVariables, AppConstants
 from app.common.shadow_mode import ShadowMode
@@ -17,6 +16,7 @@ app_variables = AppVariables()
 app_constants = AppConstants()
 shadow_mode = ShadowMode()
 aes_cipher = AESCipher(app_variables.crypt_key_length, app_variables.crypt_key)
+strava_telegram_webhooks = StravaTelegramWebhooks()
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -31,52 +31,6 @@ app.config['SCOUT_NAME'] = app_variables.scout_name
 
 class ReusableForm(Form):
     telegram_username = TextAreaField('Telegram Username:', validators=[validators.required()])
-
-
-def token_exchange(code):
-    response = requests.post(app_constants.API_TOKEN_EXCHANGE, data={
-        'client_id': int(app_variables.client_id),
-        'client_secret': app_variables.client_secret,
-        'code': code,
-        'grant_type': 'authorization_code'
-    }).json()
-
-    access_info = dict()
-
-    access_info['athlete_id'] = response['athlete']['id']
-    access_info['name'] = "{first_name} {last_name}".format(first_name=response['athlete']['firstname'],
-                                                            last_name=response['athlete']['lastname'])
-    access_info['access_token'] = response['access_token']
-    access_info['refresh_token'] = response['refresh_token']
-    access_info['expires_at'] = response['expires_at']
-
-    return access_info
-
-
-def athlete_exists(athlete_id):
-    database_connection = psycopg2.connect(app_variables.database_url, sslmode='require')
-    cursor = database_connection.cursor()
-    cursor.execute(app_constants.QUERY_ATHLETE_EXISTS.format(athlete_id=athlete_id))
-    count = cursor.fetchone()[0]
-    cursor.close()
-    database_connection.close()
-
-    return True if count > 0 else False
-
-
-def add_or_update_into_table(query, access_info, telegram_username):
-    database_connection = psycopg2.connect(app_variables.database_url, sslmode='require')
-    cursor = database_connection.cursor()
-    cursor.execute(query.format(
-        athlete_id=access_info['athlete_id'],
-        name=access_info['name'],
-        access_token=aes_cipher.encrypt(access_info['access_token']),
-        refresh_token=aes_cipher.encrypt(access_info['refresh_token']),
-        expires_at=access_info['expires_at'],
-        telegram_username=telegram_username))
-    cursor.close()
-    database_connection.commit()
-    database_connection.close()
 
 
 @app.route('/favicon.ico')
@@ -126,17 +80,23 @@ def registration(code):
             if form.validate():
                 telegram_username = telegram_username[1:] if telegram_username.startswith('@') else telegram_username
                 try:
-                    access_info = token_exchange(code)
-                    if not athlete_exists(access_info['athlete_id']):
+                    access_info = strava_telegram_webhooks.token_exchange(code)
+                    if not strava_telegram_webhooks.athlete_exists(access_info['athlete_id']):
                         query = app_constants.QUERY_INSERT_VALUES
-                        add_or_update_into_table(query, access_info, telegram_username)
-                        logging.info("Added new athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
+                        logging.info("Adding new athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
                     else:
                         query = app_constants.QUERY_UPDATE_VALUES
-                        add_or_update_into_table(query, access_info, telegram_username)
-                        logging.info("Updated athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
+                        logging.info("Updating athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
 
-                    requests.post(app_variables.api_webhook_stats.format(athlete_id=access_info['athlete_id']))
+                    strava_telegram_webhooks.database_write(query.format(
+                        athlete_id=access_info['athlete_id'],
+                        name=access_info['name'],
+                        access_token=aes_cipher.encrypt(access_info['access_token']),
+                        refresh_token=aes_cipher.encrypt(access_info['refresh_token']),
+                        expires_at=access_info['expires_at'],
+                        telegram_username=telegram_username))
+
+                    strava_telegram_webhooks.update_stats(access_info['athlete_id'])
 
                     shadow_mode.send_message(
                         app_constants.MESSAGE_NEW_REGISTRATION.format(athlete_name=access_info['name'],
