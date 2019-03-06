@@ -60,7 +60,7 @@ class StravaTelegramWebhooks(object):
         endpoint = self.app_constants.API_DATABASE_WRITE.format(host=self.host)
         data = json.dumps({"query": query})
         try:
-            response = requests.post(endpoint, data=data, headers={"Content-Type: application/json"})
+            response = requests.post(endpoint, data=data, headers={"Content-Type": "application/json"})
         except Exception:
             logging.error(traceback.format_exc())
         else:
