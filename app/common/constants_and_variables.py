@@ -38,7 +38,7 @@ class AppConstants(object):
     API_TOKEN_EXCHANGE = "{host}/token/exchange/{code}"
     API_ATHLETE_EXISTS = "{host}/athlete/exists/{athlete_id}"
     API_UPDATE_STATS = "{host}/stats/{athlete_id}"
-    API_DATABASE_WRITE = "{host}/database/write/{query}"
+    API_DATABASE_WRITE = "{host}/database/write"
 
     MESSAGE_NEW_REGISTRATION = "{athlete_name} registered with Telegram username `{telegram_username}`"
 

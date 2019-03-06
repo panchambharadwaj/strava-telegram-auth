@@ -1,4 +1,6 @@
 #  -*- encoding: utf-8 -*-
+
+import json
 import logging
 import traceback
 
@@ -55,9 +57,10 @@ class StravaTelegramWebhooks(object):
 
     def database_write(self, query):
         result = False
-        endpoint = self.app_constants.API_DATABASE_WRITE.format(host=self.host, query=query)
+        endpoint = self.app_constants.API_DATABASE_WRITE.format(host=self.host)
+        data = json.dumps({"query": query})
         try:
-            response = requests.post(endpoint)
+            response = requests.post(endpoint, data=data, headers={"Content-Type: application/json"})
         except Exception:
             logging.error(traceback.format_exc())
         else:
