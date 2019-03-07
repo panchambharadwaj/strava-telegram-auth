@@ -33,12 +33,11 @@ class AppConstants(object):
                           "telegram_username='{telegram_username}', active=true, updated=now()" \
                           "where athlete_id={athlete_id}"
 
-    API_TELEGRAM_SEND_MESSAGE = "https://api.telegram.org/bot{bot_token}/sendMessage"
-
     API_TOKEN_EXCHANGE = "{host}/token/exchange/{code}"
     API_ATHLETE_EXISTS = "{host}/athlete/exists/{athlete_id}"
     API_UPDATE_STATS = "{host}/stats/{athlete_id}"
     API_DATABASE_WRITE = "{host}/database/write"
+    API_SHADOW_MESSAGE = "{host}/telegram/shadow_message"
 
     MESSAGE_NEW_REGISTRATION = "{athlete_name} registered with Telegram username `{telegram_username}`"
 
