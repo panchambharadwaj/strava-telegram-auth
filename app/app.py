@@ -82,33 +82,37 @@ def registration(code):
             telegram_username = request.form['telegram_username'].strip()
 
             if form.validate():
+                success = False
                 telegram_username = telegram_username[1:] if telegram_username.startswith('@') else telegram_username
-                try:
-                    access_info = strava_telegram_webhooks.token_exchange(code)
-                    if not strava_telegram_webhooks.athlete_exists(access_info['athlete_id']):
+                access_info = strava_telegram_webhooks.token_exchange(code)
+                if access_info:
+                    athlete_exists = strava_telegram_webhooks.athlete_exists(access_info['athlete_id'])
+                    if not athlete_exists:
                         query = app_constants.QUERY_INSERT_VALUES
                         logging.info("Adding new athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
                     else:
                         query = app_constants.QUERY_UPDATE_VALUES
                         logging.info("Updating athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
 
-                    strava_telegram_webhooks.database_write(query.format(
+                    result = strava_telegram_webhooks.database_write(query.format(
                         athlete_id=access_info['athlete_id'],
                         name=access_info['name'],
                         access_token=aes_cipher.encrypt(access_info['access_token']),
                         refresh_token=aes_cipher.encrypt(access_info['refresh_token']),
                         expires_at=access_info['expires_at'],
                         telegram_username=telegram_username))
+                    if result:
+                        result = strava_telegram_webhooks.update_stats(access_info['athlete_id'])
+                        if result:
+                            success = True
+                            shadow_mode.send_message(
+                                app_constants.MESSAGE_NEW_REGISTRATION.format(athlete_name=access_info['name'],
+                                                                              telegram_username=telegram_username))
 
-                    strava_telegram_webhooks.update_stats(access_info['athlete_id'])
-
-                    shadow_mode.send_message(
-                        app_constants.MESSAGE_NEW_REGISTRATION.format(athlete_name=access_info['name'],
-                                                                      telegram_username=telegram_username))
+                if success:
                     return render_template('successful.html', page_title=app_variables.page_title,
                                            bot_url=app_variables.bot_url)
-
-                except Exception:
+                else:
                     logging.exception(
                         "Exception: {exception_traceback}".format(exception_traceback=traceback.format_exc()))
                     shadow_mode.send_message("Failed to register for Telegram username {telegram_username}".format(
