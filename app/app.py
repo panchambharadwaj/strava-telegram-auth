@@ -12,6 +12,10 @@ from app.common.aes_cipher import AESCipher
 from app.common.constants_and_variables import AppVariables, AppConstants
 from app.common.shadow_mode import ShadowMode
 
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.os.environ.get('LOGGING_LEVEL'))
+logger = logging.getLogger(__name__)
+
 app_variables = AppVariables()
 app_constants = AppConstants()
 shadow_mode = ShadowMode()
@@ -122,7 +126,4 @@ def registration(code):
 
 
 if __name__ == '__main__' and __package__ is None:
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                        level=logging.os.environ.get('LOGGING_LEVEL'))
-    logger = logging.getLogger(__name__)
     app.run(host=app_variables.app_host, port=app_variables.app_port, debug=app_variables.app_debug)
