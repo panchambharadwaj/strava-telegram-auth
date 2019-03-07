@@ -23,10 +23,10 @@ class BotRegistration(object):
             athlete_exists = self.strava_telegram_webhooks.athlete_exists(access_info['athlete_id'])
             if not athlete_exists:
                 query = self.app_constants.QUERY_INSERT_VALUES
-                logging.info("Adding new athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
+                logging.info("New athlete.")
             else:
                 query = self.app_constants.QUERY_UPDATE_VALUES
-                logging.info("Updating existing athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
+                logging.info("Existing athlete.")
 
             result = self.strava_telegram_webhooks.database_write(query.format(
                 athlete_id=access_info['athlete_id'],
