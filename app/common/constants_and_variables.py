@@ -22,8 +22,6 @@ class AppConstants(object):
         updated timestamp default current_timestamp NOT NULL
         );'''
 
-    QUERY_ATHLETE_EXISTS = "select count(*) from strava_telegram_bot where athlete_id={athlete_id}"
-
     QUERY_INSERT_VALUES = "INSERT INTO strava_telegram_bot (athlete_id, name, access_token, refresh_token, " \
                           "expires_at, telegram_username, active, created) " \
                           "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
@@ -35,8 +33,11 @@ class AppConstants(object):
                           "telegram_username='{telegram_username}', active=true, updated=now()" \
                           "where athlete_id={athlete_id}"
 
-    API_TOKEN_EXCHANGE = "https://www.strava.com/oauth/token"
-    API_TELEGRAM_SEND_MESSAGE = "https://api.telegram.org/bot{bot_token}/sendMessage"
+    API_TOKEN_EXCHANGE = "{host}/token/exchange/{code}"
+    API_ATHLETE_EXISTS = "{host}/athlete/exists/{athlete_id}"
+    API_UPDATE_STATS = "{host}/stats/{athlete_id}"
+    API_DATABASE_WRITE = "{host}/database/write"
+    API_SHADOW_MESSAGE = "{host}/telegram/shadow_message"
 
     MESSAGE_NEW_REGISTRATION = "{athlete_name} registered with Telegram username `{telegram_username}`"
 
@@ -45,7 +46,6 @@ class AppVariables(object):
     crypt_key_length = int(os.environ.get('CRYPT_KEY_LENGTH'))
     crypt_key = os.environ.get('CRYPT_KEY')
     client_id = os.environ.get('CLIENT_ID')
-    client_secret = os.environ.get('CLIENT_SECRET')
     strava_auth_url = os.environ.get('STRAVA_AUTH_URL')
     redirect_uri = os.environ.get('REDIRECT_URI')
     page_title = os.environ.get('PAGE_TITLE')
@@ -61,4 +61,4 @@ class AppVariables(object):
     scout_monitor = os.environ.get('SCOUT_MONITOR')
     scout_key = os.environ.get('SCOUT_KEY')
     scout_name = os.environ.get('SCOUT_NAME')
-    api_webhook_stats = os.environ.get('UPDATE_STATS_WEBHOOK_API')
+    api_host = os.environ.get('API_HOST')

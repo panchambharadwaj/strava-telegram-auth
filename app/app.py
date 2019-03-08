@@ -3,20 +3,21 @@
 import logging
 import traceback
 
-import psycopg2
-import requests
 from flask import Flask, request, redirect, render_template, url_for, flash
 from scout_apm.flask import ScoutApm
 from wtforms import Form, TextAreaField, validators
 
-from app.common.aes_cipher import AESCipher
-from app.common.constants_and_variables import AppVariables, AppConstants
-from app.common.shadow_mode import ShadowMode
+from app.commands.bot_registration import BotRegistration
+from app.common.constants_and_variables import AppVariables
+from app.resources.strava_telegram_webhooks import StravaTelegramWebhooksResource
+
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    level=logging.os.environ.get('LOGGING_LEVEL'))
+logger = logging.getLogger(__name__)
 
 app_variables = AppVariables()
-app_constants = AppConstants()
-shadow_mode = ShadowMode()
-aes_cipher = AESCipher(app_variables.crypt_key_length, app_variables.crypt_key)
+strava_telegram_webhooks = StravaTelegramWebhooksResource()
+bot_registration = BotRegistration()
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -33,52 +34,6 @@ class ReusableForm(Form):
     telegram_username = TextAreaField('Telegram Username:', validators=[validators.required()])
 
 
-def token_exchange(code):
-    response = requests.post(app_constants.API_TOKEN_EXCHANGE, data={
-        'client_id': int(app_variables.client_id),
-        'client_secret': app_variables.client_secret,
-        'code': code,
-        'grant_type': 'authorization_code'
-    }).json()
-
-    access_info = dict()
-
-    access_info['athlete_id'] = response['athlete']['id']
-    access_info['name'] = "{first_name} {last_name}".format(first_name=response['athlete']['firstname'],
-                                                            last_name=response['athlete']['lastname'])
-    access_info['access_token'] = response['access_token']
-    access_info['refresh_token'] = response['refresh_token']
-    access_info['expires_at'] = response['expires_at']
-
-    return access_info
-
-
-def athlete_exists(athlete_id):
-    database_connection = psycopg2.connect(app_variables.database_url, sslmode='require')
-    cursor = database_connection.cursor()
-    cursor.execute(app_constants.QUERY_ATHLETE_EXISTS.format(athlete_id=athlete_id))
-    count = cursor.fetchone()[0]
-    cursor.close()
-    database_connection.close()
-
-    return True if count > 0 else False
-
-
-def add_or_update_into_table(query, access_info, telegram_username):
-    database_connection = psycopg2.connect(app_variables.database_url, sslmode='require')
-    cursor = database_connection.cursor()
-    cursor.execute(query.format(
-        athlete_id=access_info['athlete_id'],
-        name=access_info['name'],
-        access_token=aes_cipher.encrypt(access_info['access_token']),
-        refresh_token=aes_cipher.encrypt(access_info['refresh_token']),
-        expires_at=access_info['expires_at'],
-        telegram_username=telegram_username))
-    cursor.close()
-    database_connection.commit()
-    database_connection.close()
-
-
 @app.route('/favicon.ico')
 def hello():
     return redirect(url_for('static', filename='favicon.ico'), code=302)
@@ -86,34 +41,20 @@ def hello():
 
 @app.route("/")
 def home():
-    try:
-        return "Welcome. Visit /register to register."
-    except Exception:
-        message = "Something went wrong. Exception: {exception}".format(exception=traceback.format_exc())
-        logging.error(message)
-        shadow_mode.send_message(message)
+    return "Welcome. Visit /register to register."
 
 
 @app.route("/register")
 def register():
-    try:
-        return redirect(app_variables.strava_auth_url.format(client_id=app_variables.client_id,
-                                                             redirect_uri=app_variables.redirect_uri), code=302)
-    except Exception:
-        message = "Something went wrong. Exception: {exception}".format(exception=traceback.format_exc())
-        logging.error(message)
-        shadow_mode.send_message(message)
+    strava_auth_url = app_variables.strava_auth_url.format(client_id=app_variables.client_id,
+                                                           redirect_uri=app_variables.redirect_uri)
+    return redirect(strava_auth_url, code=302)
 
 
 @app.route("/auth")
 def auth_callback():
-    try:
-        code = request.args.get('code')
-        return redirect(url_for('registration', code=code))
-    except Exception:
-        message = "Something went wrong. Exception: {exception}".format(exception=traceback.format_exc())
-        logging.error(message)
-        shadow_mode.send_message(message)
+    code = request.args.get('code')
+    return redirect(url_for('registration', code=code))
 
 
 @app.route("/registration/<code>", methods=['GET', 'POST'])
@@ -122,47 +63,26 @@ def registration(code):
         form = ReusableForm(request.form)
         if request.method == 'POST':
             telegram_username = request.form['telegram_username'].strip()
-
             if form.validate():
-                telegram_username = telegram_username[1:] if telegram_username.startswith('@') else telegram_username
-                try:
-                    access_info = token_exchange(code)
-                    if not athlete_exists(access_info['athlete_id']):
-                        query = app_constants.QUERY_INSERT_VALUES
-                        add_or_update_into_table(query, access_info, telegram_username)
-                        logging.info("Added new athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
-                    else:
-                        query = app_constants.QUERY_UPDATE_VALUES
-                        add_or_update_into_table(query, access_info, telegram_username)
-                        logging.info("Updated athlete {athlete_id}".format(athlete_id=access_info['athlete_id']))
-
-                    requests.post(app_variables.api_webhook_stats.format(athlete_id=access_info['athlete_id']))
-
-                    shadow_mode.send_message(
-                        app_constants.MESSAGE_NEW_REGISTRATION.format(athlete_name=access_info['name'],
-                                                                      telegram_username=telegram_username))
+                logging.info(
+                    "Registering Telegram user: {telegram_username}..".format(telegram_username=telegram_username))
+                if bot_registration.main(telegram_username, code):
                     return render_template('successful.html', page_title=app_variables.page_title,
                                            bot_url=app_variables.bot_url)
-
-                except Exception:
-                    logging.exception(
-                        "Exception: {exception_traceback}".format(exception_traceback=traceback.format_exc()))
-                    shadow_mode.send_message("Failed to register for Telegram username {telegram_username}".format(
-                        telegram_username=telegram_username))
+                else:
                     return render_template('failed.html', page_title=app_variables.page_title)
             else:
+                logging.error("User did not enter Telegram Username")
                 flash('Telegram Username is Mandatory', 'Error')
 
+        logging.info("Not a POST call. Redirecting to registration page..")
         return render_template('registration.html', form=form, page_title=app_variables.page_title)
 
     except Exception:
         message = "Something went wrong. Exception: {exception}".format(exception=traceback.format_exc())
         logging.error(message)
-        shadow_mode.send_message(message)
+        strava_telegram_webhooks.shadow_message(message)
 
 
 if __name__ == '__main__' and __package__ is None:
-    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                        level=logging.os.environ.get('LOGGING_LEVEL'))
-    logger = logging.getLogger(__name__)
     app.run(host=app_variables.app_host, port=app_variables.app_port, debug=app_variables.app_debug)
