@@ -9,10 +9,5 @@
       "size": "Free"
     }
   },
-  "image": "heroku/python",
-  "addons": [
-    {
-      "plan": "heroku-postgresql:hobby-dev"
-    }
-  ]
+  "image": "heroku/python"
 }

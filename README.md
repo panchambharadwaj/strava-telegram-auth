@@ -1,14 +1,7 @@
 # Strava Telegram Auth
 
-App is ready to be deployed on Heroku. Attach a Postgres Database to the app and create the table before using.
+App is ready to be deployed on Heroku. Attach a Postgres Database to the Webhooks App and create the table before using this app.
 
-### Create table
-
-```
-$ heroku run bash --app <app_name>
-$ python app/ddl/create_table.py
-$ exit
-```
 
 ##### Deploy Hooks HTTP URL
 ```
