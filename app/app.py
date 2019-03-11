@@ -9,6 +9,7 @@ from wtforms import Form, TextAreaField, validators
 
 from app.commands.bot_registration import BotRegistration
 from app.common.constants_and_variables import AppVariables
+from app.common.execution_time import execution_time
 from app.resources.strava_telegram_webhooks import StravaTelegramWebhooksResource
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -58,6 +59,7 @@ def auth_callback():
 
 
 @app.route("/registration/<code>", methods=['GET', 'POST'])
+@execution_time
 def registration(code):
     try:
         form = ReusableForm(request.form)
