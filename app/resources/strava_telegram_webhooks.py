@@ -1,8 +1,8 @@
 #  -*- encoding: utf-8 -*-
 
-import json
 import logging
 import traceback
+import ujson
 
 import requests
 
@@ -64,7 +64,7 @@ class StravaTelegramWebhooksResource(object):
     def database_write(self, query):
         result = False
         endpoint = self.app_constants.API_DATABASE_WRITE.format(host=self.host)
-        data = json.dumps({"query": query})
+        data = ujson.dumps({"query": query})
         try:
             logging.info("Requesting write operation to the database..")
             response = requests.post(endpoint, data=data, headers={"Content-Type": "application/json"})
@@ -80,7 +80,7 @@ class StravaTelegramWebhooksResource(object):
     def shadow_message(self, message):
         result = False
         endpoint = self.app_constants.API_SHADOW_MESSAGE.format(host=self.host)
-        data = json.dumps({"message": message})
+        data = ujson.dumps({"message": message})
         try:
             logging.info("Requesting to send shadow message..")
             response = requests.post(endpoint, data=data, headers={"Content-Type": "application/json"})
