@@ -31,6 +31,21 @@ class StravaTelegramWebhooksResource(object):
 
         return result if result != {} else False
 
+    def token_exchange_for_challenges(self, code):
+        result = {}
+        endpoint = self.app_constants.API_CHALLENGES_TOKEN_EXCHANGE.format(host=self.host, code=code)
+        try:
+            logging.info("Requesting token exchange for challenges..")
+            response = requests.post(endpoint)
+            logging.info("Response status code: {status_code}".format(status_code=response.status_code))
+        except Exception:
+            logging.error(traceback.format_exc())
+        else:
+            if response.status_code == 200:
+                result = response.json()
+
+        return result if result != {} else False
+
     def athlete_exists(self, athlete_id):
         result = False
         endpoint = self.app_constants.API_ATHLETE_EXISTS.format(host=self.host, athlete_id=athlete_id)
@@ -43,6 +58,21 @@ class StravaTelegramWebhooksResource(object):
         else:
             if response.status_code == 200:
                 result = True
+
+        return result
+
+    def athlete_details_in_challenges(self, athlete_id):
+        result = False
+        endpoint = self.app_constants.API_ATHLETE_DETAILS_IN_CHALLENGES.format(host=self.host, athlete_id=athlete_id)
+        try:
+            logging.info("Fetching athlete details for {athlete_id} from challenges..".format(athlete_id=athlete_id))
+            response = requests.get(endpoint)
+            logging.info("Response status code: {status_code}".format(status_code=response.status_code))
+        except Exception:
+            logging.error(traceback.format_exc())
+        else:
+            if response.status_code == 200:
+                result = response.json()
 
         return result
 
