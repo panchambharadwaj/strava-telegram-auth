@@ -2,7 +2,6 @@
 
 import logging
 import traceback
-import ujson
 
 from flask import Flask, request, redirect, render_template, url_for, flash
 from scout_apm.flask import ScoutApm
@@ -125,21 +124,19 @@ def challenges_odd_auth():
 @execution_time
 def challenges_registration_month_code(month, code):
     form = ReusableFormChallenges(request.form)
+    page_title = app_variables.challenges_even_page_title if month == "even" else app_variables.challenges_odd_page_title
     if request.method == 'POST':
         challenge_ids = request.form.getlist("challenge_id")
         if len(challenge_ids) > 0:
-            if challenges_registration.main(ujson.dumps(challenge_ids), month, code):
-                page_title = app_variables.challenges_even_page_title if month == "even" else app_variables.challenges_odd_page_title
+            if challenges_registration.main(challenge_ids, month, code):
                 return render_template('challenges_registration_successful.html', page_title=page_title)
             else:
-                return render_template('failed.html', page_title=app_variables.page_title)
+                return render_template('failed.html', page_title=page_title)
         else:
             flash('Select at least one challenge!')
 
     challenges_registration_page = 'challenges_even_registration.html' if month == "even" else 'challenges_odd_registration.html'
-    return render_template(challenges_registration_page, form=form, page_title=app_variables.page_title,
-                           challenge_id_0001="20_20", challenge_id_0002="1000_km", challenge_id_0003="10000_meters",
-                           note="Select one or more challenges and click Submit")
+    return render_template(challenges_registration_page, form=form, page_title=page_title)
 
 
 if __name__ == '__main__' and __package__ is None:

@@ -45,7 +45,7 @@ class AppConstants(object):
     API_ATHLETE_DETAILS_IN_CHALLENGES = "{host}/challenges/athlete/{athlete_id}"
 
     MESSAGE_NEW_REGISTRATION = "{athlete_name} registered with Telegram username `{telegram_username}`"
-    MESSAGE_NEW_CHALLENGES_REGISTRATION = "{athlete_name} registered for {month} month challenges."
+    MESSAGE_NEW_CHALLENGES_REGISTRATION = "{athlete_name} registered for {month} month's challenges.\n\nChallenge IDs: {challenge_ids}"
 
 
 class AppVariables(object):

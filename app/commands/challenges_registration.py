@@ -1,6 +1,7 @@
 #  -*- encoding: utf-8 -*-
 
 import logging
+import ujson
 
 from app.common.aes_cipher import AESCipher
 from app.common.constants_and_variables import AppConstants, AppVariables
@@ -30,10 +31,10 @@ class ChallengesRegistration(object):
                     query.format(athlete_id=access_info['athlete_id'], name=access_info['name'],
                                  access_token=self.aes_cipher.encrypt(access_info['access_token']),
                                  refresh_token=self.aes_cipher.encrypt(access_info['refresh_token']),
-                                 expires_at=access_info['expires_at'], challenge_ids=challenge_ids)):
+                                 expires_at=access_info['expires_at'], challenge_ids=ujson.dumps(challenge_ids))):
                 success = True
                 message = self.app_constants.MESSAGE_NEW_CHALLENGES_REGISTRATION.format(
-                    athlete_name=access_info['name'], month=month)
+                    athlete_name=access_info['name'], month=month, challenge_ids=challenge_ids)
             else:
                 message = "Failed to write {athlete_name}'s info into database.".format(
                     athlete_name=access_info['name'])
