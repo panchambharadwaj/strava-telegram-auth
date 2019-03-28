@@ -2,6 +2,7 @@
 
 import logging
 import traceback
+import ujson
 
 from flask import Flask, request, redirect, render_template, url_for, flash
 from scout_apm.flask import ScoutApm
@@ -35,6 +36,12 @@ app.config['SCOUT_NAME'] = app_variables.scout_name
 
 class ReusableForm(Form):
     telegram_username = TextAreaField('Telegram Username:', validators=[validators.required()])
+
+
+class ReusableFormChallenges(Form):
+    challenge_id_0001 = TextAreaField("20_20", validators=[validators.required()])
+    challenge_id_0002 = TextAreaField("1000_km", validators=[validators.required()])
+    challenge_id_0003 = TextAreaField("10000_meters", validators=[validators.required()])
 
 
 @app.route('/favicon.ico')
@@ -114,13 +121,25 @@ def challenges_odd_auth():
     return redirect(url_for('challenges_registration_month_code', month="odd", code=code))
 
 
-@app.route("/challenges/registration/<month>/<code>")
+@app.route("/challenges/registration/<month>/<code>", methods=['GET', 'POST'])
 @execution_time
 def challenges_registration_month_code(month, code):
-    if challenges_registration.main(month, code):
-        return render_template('challenges_registration_successful.html', page_title=app_variables.page_title)
-    else:
-        return render_template('failed.html', page_title=app_variables.page_title)
+    form = ReusableFormChallenges(request.form)
+    if request.method == 'POST':
+        challenge_ids = request.form.getlist("challenge_id")
+        if len(challenge_ids) > 0:
+            if challenges_registration.main(ujson.dumps(challenge_ids), month, code):
+                page_title = app_variables.challenges_even_page_title if month == "even" else app_variables.challenges_odd_page_title
+                return render_template('challenges_registration_successful.html', page_title=page_title)
+            else:
+                return render_template('failed.html', page_title=app_variables.page_title)
+        else:
+            flash('Select at least one challenge!')
+
+    challenges_registration_page = 'challenges_even_registration.html' if month == "even" else 'challenges_odd_registration.html'
+    return render_template(challenges_registration_page, form=form, page_title=app_variables.page_title,
+                           challenge_id_0001="20_20", challenge_id_0002="1000_km", challenge_id_0003="10000_meters",
+                           note="Select one or more challenges and click Submit")
 
 
 if __name__ == '__main__' and __package__ is None:

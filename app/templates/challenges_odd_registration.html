@@ -1,0 +1,63 @@
+<html>
+<head>
+    <title>{{ page_title }}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" media="screen" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+<div class="container">
+    <br>
+    <center>
+        <h2>{{ page_title }}</h2>
+    </center>
+</div>
+<div class=container">
+    <br>
+    <div class="row align-items-center justify-content-center">
+        <div class="col-md-4">
+            <form action="" method="post" role="form">
+                {{ form.csrf }}
+                <div class="form-check">
+                    <input class="form-check-input" id="0001" name="challenge_id" type="checkbox" value="0001">
+                    <label class="form-check-label" for="0001">
+                        {{ challenge_id_0001 }}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" id="0002" name="challenge_id" type="checkbox" value="0002">
+                    <label class="form-check-label" for="0002">
+                        {{ challenge_id_0002 }}
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" id="0003" name="challenge_id" type="checkbox" value="0003">
+                    <label class="form-check-label" for="0003">
+                        {{ challenge_id_0003 }}
+                    </label>
+                </div>
+                <br>
+                <p>
+                    <small>{{ note }}</small>
+                </p>
+                <center>
+                    <button class="btn btn-success" type="submit">Submit</button>
+                </center>
+            </form>
+            <br>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger">
+                <strong></strong> {{ message[1] }}
+            </div>
+            challenge_id
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+        <br>
+    </div>
+</div>
+</body>
+</html>
