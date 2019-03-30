@@ -1,6 +1,7 @@
 #  -*- encoding: utf-8 -*-
 
 import logging
+
 import ujson
 
 from app.common.aes_cipher import AESCipher
@@ -35,6 +36,7 @@ class ChallengesRegistration(object):
                 success = True
                 message = self.app_constants.MESSAGE_NEW_CHALLENGES_REGISTRATION.format(
                     athlete_name=access_info['name'], month=month, challenge_ids=challenge_ids)
+                self.strava_telegram_webhooks.update_challenges_stats(access_info['athlete_id'])
             else:
                 message = "Failed to write {athlete_name}'s info into database.".format(
                     athlete_name=access_info['name'])

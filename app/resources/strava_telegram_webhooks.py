@@ -2,9 +2,9 @@
 
 import logging
 import traceback
-import ujson
 
 import requests
+import ujson
 
 from app.common.constants_and_variables import AppVariables, AppConstants
 
@@ -81,6 +81,21 @@ class StravaTelegramWebhooksResource(object):
         endpoint = self.app_constants.API_UPDATE_STATS.format(host=self.host, athlete_id=athlete_id)
         try:
             logging.info("Sending request to update stats for {athlete_id}".format(athlete_id=athlete_id))
+            response = requests.post(endpoint)
+            logging.info("Response status code: {status_code}".format(status_code=response.status_code))
+        except Exception:
+            logging.error(traceback.format_exc())
+        else:
+            if response.status_code == 200:
+                result = True
+
+        return result
+
+    def update_challenges_stats(self, athlete_id):
+        result = False
+        endpoint = self.app_constants.API_ATHLETE_CALCULATE_CHALLENGES.format(host=self.host, athlete_id=athlete_id)
+        try:
+            logging.info("Sending request to update challenges stats for {athlete_id}".format(athlete_id=athlete_id))
             response = requests.post(endpoint)
             logging.info("Response status code: {status_code}".format(status_code=response.status_code))
         except Exception:
