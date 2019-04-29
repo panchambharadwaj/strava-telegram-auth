@@ -1,0 +1,125 @@
+<html>
+<head>
+    <title>{{ page_title }}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" media="screen" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" rel="stylesheet">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+<div class="container">
+    <br>
+    <center>
+        <h2>{{ page_title }}</h2>
+    </center>
+</div>
+<div class=container">
+    <br>
+    <div class="row align-items-center justify-content-center">
+        <div class="col-md-4">
+            <form action="" method="post" role="form">
+                {{ form.csrf }}
+                <p>
+                    <small>Challenge 1: 5x20 = 100 <br>
+                        - Do 5 km rides for any 20 days in the month of May, 2019. <br>
+                        - They do not have to be consecutive days. <br>
+                        - It has to be a single ride on Strava. <br>
+                        - Multiple rides adding up to 5 km will not be counted.
+                    </small>
+                </p>
+                <p>
+                    <small>Challenge 2: T20 <br>
+                        - Do 20 minute ride for any 20 days in the month of May, 2019. <br>
+                        - They do not have to be consecutive days. <br>
+                        - It has to be a single ride on Strava. <br>
+                        - Multiple rides adding up to 20 minutes will not be counted.
+                    </small>
+                </p>
+                <p>
+                    <small>Challenge 3: Power Play <br>
+                        - Get off to a quick start <br>
+                        - Ride as much as you want/can from 1st May to 8th May (both days inclusive) <br>
+                        - Top performers from each location will win awards.
+                    </small>
+                </p>
+                <p>
+                    <small>Challenge 4: The Middle Overs <br>
+                        - Consistency counts, keep clocking those kms <br>
+                        - Ride as much as you want/can from 9th May till 23rd May (both days inclusive). <br>
+                        - Top performers from each location will win awards.
+                    </small>
+                </p>
+                <p>
+                    <small>Challenge 5: The Final Overs <br>
+                        - Can you finish on a high? <br>
+                        - Ride as much as you want/can from 24th May till 31st May (both days inclusive) <br>
+                        - Top performers from each location will win awards.
+                    </small>
+                </p>
+                <div class="form-check">
+                    <input class="form-check-input" id="5_20" name="challenge_id" type="checkbox" value="5_20">
+                    <label class="form-check-label" for="5_20">
+                        5x20
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" id="20_20" name="challenge_id" type="checkbox" value="20_20">
+                    <label class="form-check-label" for="20_20">
+                        T20
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" id="power_play" name="challenge_id" type="checkbox"
+                           value="power_play">
+                    <label class="form-check-label" for="power_play">
+                        Power Play
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" id="middle_overs" name="challenge_id" type="checkbox"
+                           value="middle_overs">
+                    <label class="form-check-label" for="middle_overs">
+                        Middle Overs
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" id="final_overs" name="challenge_id" type="checkbox"
+                           value="final_overs">
+                    <label class="form-check-label" for="final_overs">
+                        Final Overs
+                    </label>
+                </div>
+                <br>
+                <div class="form-group">
+                    <div class="input-group">
+                        <span class="input-group-addon">Location: </span>
+                        <select class="selectpicker form-control" name="location">
+                            {% for o in data %}
+                            <option value="{{ o.name }}">{{ o.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <p>
+                    <small>Select one or more challenges and click Submit</small>
+                </p>
+                <center>
+                    <button class="btn btn-success" type="submit">Submit</button>
+                </center>
+            </form>
+            <br>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger">
+                <strong></strong> {{ message[1] }}
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+        <br>
+    </div>
+</div>
+</body>
+</html>

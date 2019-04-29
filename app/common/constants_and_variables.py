@@ -21,20 +21,40 @@ class AppConstants(object):
                                           "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
                                           "{expires_at}, '{challenge_ids}', current_timestamp)"
 
+    QUERY_CHALLENGES_BOSCH_EVEN_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, access_token, " \
+                                                "refresh_token, expires_at, bosch_even_challenges, created) " \
+                                                "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
+                                                "{expires_at}, '{challenge_ids}', current_timestamp)"
+
     QUERY_CHALLENGES_EVEN_UPDATE_VALUES = "UPDATE strava_challenges " \
                                           "SET name='{name}', access_token='{access_token}', " \
                                           "refresh_token='{refresh_token}', expires_at={expires_at}, " \
                                           "even_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
+
+    QUERY_CHALLENGES_BOSCH_EVEN_UPDATE_VALUES = "UPDATE strava_challenges " \
+                                                "SET name='{name}', access_token='{access_token}', " \
+                                                "refresh_token='{refresh_token}', expires_at={expires_at}, " \
+                                                "bosch_even_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
 
     QUERY_CHALLENGES_ODD_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, access_token, " \
                                          "refresh_token, expires_at, odd_challenges, created) " \
                                          "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
                                          "{expires_at}, '{challenge_ids}', current_timestamp)"
 
+    QUERY_CHALLENGES_BOSCH_ODD_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, access_token, " \
+                                               "refresh_token, expires_at, bosch_odd_challenges, created) " \
+                                               "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
+                                               "{expires_at}, '{challenge_ids}', current_timestamp)"
+
     QUERY_CHALLENGES_ODD_UPDATE_VALUES = "UPDATE strava_challenges " \
                                          "SET name='{name}', access_token='{access_token}', " \
                                          "refresh_token='{refresh_token}', expires_at={expires_at}, " \
                                          "odd_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
+
+    QUERY_CHALLENGES_BOSCH_ODD_UPDATE_VALUES = "UPDATE strava_challenges " \
+                                               "SET name='{name}', access_token='{access_token}', " \
+                                               "refresh_token='{refresh_token}', expires_at={expires_at}, " \
+                                               "bosch_odd_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
 
     API_TOKEN_EXCHANGE = "{host}/token/exchange/{code}"
     API_CHALLENGES_TOKEN_EXCHANGE = "{host}/token/exchange/challenges/{code}"
@@ -47,6 +67,7 @@ class AppConstants(object):
 
     MESSAGE_NEW_REGISTRATION = "{athlete_name} registered with Telegram username `{telegram_username}`"
     MESSAGE_NEW_CHALLENGES_REGISTRATION = "{athlete_name} registered for {month} month's challenges.\n\nChallenge IDs: {challenge_ids}"
+    MESSAGE_NEW_BOSCH_CHALLENGES_REGISTRATION = "{athlete_name} registered for Bosch's {month} month's challenges.\n\nChallenge IDs: {challenge_ids}\nLocation: {location}"
 
 
 class AppVariables(object):
@@ -59,9 +80,13 @@ class AppVariables(object):
     redirect_uri = os.environ.get('REDIRECT_URI')
     challenges_even_redirect_uri = os.environ.get('CHALLENGES_EVEN_REDIRECT_URI')
     challenges_odd_redirect_uri = os.environ.get('CHALLENGES_ODD_REDIRECT_URI')
+    challenges_bosch_even_redirect_uri = os.environ.get('CHALLENGES_BOSCH_EVEN_REDIRECT_URI')
+    challenges_bosch_odd_redirect_uri = os.environ.get('CHALLENGES_BOSCH_ODD_REDIRECT_URI')
     page_title = os.environ.get('PAGE_TITLE')
     challenges_even_page_title = os.environ.get('CHALLENGES_EVEN_PAGE_TITLE')
     challenges_odd_page_title = os.environ.get('CHALLENGES_ODD_PAGE_TITLE')
+    challenges_bosch_even_page_title = os.environ.get('CHALLENGES_BOSCH_EVEN_PAGE_TITLE')
+    challenges_bosch_odd_page_title = os.environ.get('CHALLENGES_BOSCH_ODD_PAGE_TITLE')
     secret_key = os.environ.get('SECRET_KEY')
     app_port = os.environ.get('APP_PORT')
     app_debug = os.environ.get('APP_DEBUG')
