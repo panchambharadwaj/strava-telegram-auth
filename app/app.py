@@ -181,13 +181,16 @@ def challenges_bosch_registration_month_code(month, code):
     if request.method == 'POST':
         challenge_ids = request.form.getlist("challenge_id")
         location = request.form.get('location')
-        if len(challenge_ids) > 0 and location != '':
-            if challenges_registration.bosch(challenge_ids, location, month, code):
+        ntid = request.form.get('ntid')
+        email = request.form.get('email')
+        phone = request.form.get('phone')
+        if len(challenge_ids) > 0 and location != '' and ntid != '' and email != '' and phone != '':
+            if challenges_registration.bosch(challenge_ids, location, ntid, email, phone, month, code):
                 return render_template('challenges_registration_successful.html', page_title=page_title)
             else:
                 return render_template('failed.html', page_title=page_title)
         else:
-            flash('Select at least one challenge/location!')
+            flash('Select at least one challenge/location and fill in all the details!')
 
     challenges_registration_page = 'challenges_bosch_even_registration.html' if month == "even" else 'challenges_bosch_odd_registration.html'
     locations = [{'name': ''}, {'name': 'EC'}, {'name': 'KOR'}, {'name': 'BMH'}, {'name': 'GTP'}, {'name': 'Audugodi'},

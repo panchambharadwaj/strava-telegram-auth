@@ -67,7 +67,7 @@ class AppConstants(object):
 
     MESSAGE_NEW_REGISTRATION = "{athlete_name} registered with Telegram username `{telegram_username}`"
     MESSAGE_NEW_CHALLENGES_REGISTRATION = "{athlete_name} registered for {month} month's challenges.\n\nChallenge IDs: {challenge_ids}"
-    MESSAGE_NEW_BOSCH_CHALLENGES_REGISTRATION = "{athlete_name} registered for Bosch's {month} month's challenges.\n\nChallenge IDs: {challenge_ids}\nLocation: {location}"
+    MESSAGE_NEW_BOSCH_CHALLENGES_REGISTRATION = "{athlete_name} registered for Bosch's {month} month's challenges.\n\nChallenge IDs: {challenge_ids}\nLocation: {location}\nNTID: {ntid}\nEmail ID: {email}\nPhone Number: {phone}"
 
 
 class AppVariables(object):

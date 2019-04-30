@@ -49,7 +49,7 @@ class ChallengesRegistration(object):
 
         return success
 
-    def bosch(self, challenge_ids, location, month, code):
+    def bosch(self, challenge_ids, location, ntid, email, phone, month, code):
         logging.info(
             "Challenge IDs: {challenge_ids}. Month: {month}".format(challenge_ids=challenge_ids, location=location,
                                                                     month=month))
@@ -67,10 +67,13 @@ class ChallengesRegistration(object):
                                  access_token=self.aes_cipher.encrypt(access_info['access_token']),
                                  refresh_token=self.aes_cipher.encrypt(access_info['refresh_token']),
                                  expires_at=access_info['expires_at'],
-                                 challenge_ids=ujson.dumps({'id': challenge_ids, 'location': location}))):
+                                 challenge_ids=ujson.dumps(
+                                     {'id': challenge_ids, 'location': location, 'ntid': ntid, 'email': email,
+                                      'phone': phone}))):
                 success = True
                 message = self.app_constants.MESSAGE_NEW_BOSCH_CHALLENGES_REGISTRATION.format(
-                    athlete_name=access_info['name'], month=month, challenge_ids=challenge_ids, location=location)
+                    athlete_name=access_info['name'], month=month, challenge_ids=challenge_ids, location=location,
+                    ntid=ntid, email=email, phone=phone)
                 # self.strava_telegram_webhooks.update_challenges_stats(access_info['athlete_id'])
             else:
                 message = "Failed to write {athlete_name}'s info into database.".format(
