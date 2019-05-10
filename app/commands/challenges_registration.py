@@ -74,7 +74,7 @@ class ChallengesRegistration(object):
                 message = self.app_constants.MESSAGE_NEW_BOSCH_CHALLENGES_REGISTRATION.format(
                     athlete_name=access_info['name'], month=month, challenge_ids=challenge_ids, location=location,
                     ntid=ntid, email=email, phone=phone)
-                # self.strava_telegram_webhooks.update_challenges_stats(access_info['athlete_id'])
+                self.strava_telegram_webhooks.update_challenges_stats(access_info['athlete_id'])
             else:
                 message = "Failed to write {athlete_name}'s info into database.".format(
                     athlete_name=access_info['name'])
