@@ -194,7 +194,7 @@ def challenges_bosch_registration_month_code(month, code):
 
     challenges_registration_page = 'challenges_bosch_even_registration.html' if month == "even" else 'challenges_bosch_odd_registration.html'
     locations = [{'name': ''}, {'name': 'EC'}, {'name': 'KOR'}, {'name': 'BMH'}, {'name': 'GTP'}, {'name': 'Audugodi'},
-                 {'name': 'MRH'}, {'name': 'Bellandur'}]
+                 {'name': 'MRH'}, {'name': 'Bellandur'}, {'name': 'COB'}, {'name': 'Hyd'}, {'name': 'Others'}]
     return render_template(challenges_registration_page, data=locations, form=form, page_title=page_title)
 
 
