@@ -78,6 +78,7 @@ def auth_callback():
         strava_auth_url = app_variables.strava_auth_url.format(client_id=app_variables.client_id,
                                                                redirect_uri=app_variables.redirect_uri,
                                                                scope=app_variables.strava_auth_scope)
+        strava_telegram_webhooks.shadow_message("Insufficient permissions.")
         return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
     else:
         return redirect(url_for('registration', code=code))
@@ -136,6 +137,7 @@ def challenges_even_auth():
         strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
                                                                           redirect_uri=app_variables.challenges_even_redirect_uri,
                                                                           scope=app_variables.strava_challenges_auth_scope)
+        strava_telegram_webhooks.shadow_message("Insufficient permissions for challenges.")
         return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
     else:
         return redirect(url_for('challenges_registration_month_code', month="even", code=code))
@@ -150,6 +152,7 @@ def challenges_odd_auth():
         strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
                                                                           redirect_uri=app_variables.challenges_odd_redirect_uri,
                                                                           scope=app_variables.strava_challenges_auth_scope)
+        strava_telegram_webhooks.shadow_message("Insufficient permissions for challenges.")
         return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
     else:
         return redirect(url_for('challenges_registration_month_code', month="odd", code=code))
@@ -199,6 +202,7 @@ def challenges_bosch_even_auth():
         strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
                                                                           redirect_uri=app_variables.challenges_bosch_even_redirect_uri,
                                                                           scope=app_variables.strava_challenges_auth_scope)
+        strava_telegram_webhooks.shadow_message("Insufficient permissions for Bosch challenges.")
         return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
     else:
         return redirect(url_for('challenges_bosch_registration_month_code', month="even", code=code))
@@ -213,6 +217,7 @@ def challenges_bosch_odd_auth():
         strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
                                                                           redirect_uri=app_variables.challenges_bosch_odd_redirect_uri,
                                                                           scope=app_variables.strava_challenges_auth_scope)
+        strava_telegram_webhooks.shadow_message("Insufficient permissions for Bosch challenges.")
         return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
     else:
         return redirect(url_for('challenges_bosch_registration_month_code', month="odd", code=code))
