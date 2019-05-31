@@ -9,7 +9,7 @@
 <div class="container">
     <br>
     <center>
-        <h2>{{ page_title }}</h2>
+        <h1>{{ page_title }}</h1>
     </center>
 </div>
 <div class=container">
@@ -17,104 +17,77 @@
     <div class="row align-items-center justify-content-center">
         <div class="col-md-4">
             <form action="" method="post" role="form">
-                {{ form.csrf }}
+                <h4> Challenge 1: </h4>
                 <p>
-                    <small>Challenge 1: 5x15 <br>
-                        - Do 5 km rides for any 15 days in the month of May, 2019. <br>
-                        - They do not have to be consecutive days. <br>
-                        - It has to be a single ride on Strava. <br>
-                        - Multiple rides adding up to 5 km will not be counted.
+                <p>
+                <h6>1. CycleToWork </h6>
+                <small>
+                    - Contribute your commutes to work for the #CycleToWork initiative by riding 10 days to office. <br>
+                    - Needs registration at <a href="http://cycleto.work"> cycleto.work </a> <br>
+                    - Rides have to be to the location registered on CycleToWork. <br>
+                    - Starting Bonus of 50 points each for the first 2 CycleToWork days (max points 100). <br>
+                    - Accumulate 30 points for each CycleToWork day including the first 2 days (limited to a max of 300
+                    points). <br>
+                    - Additional Bonus of 100 points if you have more than 12 CycleToWork days in June. <br>
+                </small>
+                </p>
+                </p>
+                <h4> Challenge 2: </h4>
+                <p>
+                <p>
+                <h6>2a: 6x15 </h6>
+                <small>
+                    - Do 6 km rides for any 15 days in the month of June, 2019. <br>
+                    - It has to be a single ride on Strava. Multiple rides adding up to 6 km in a day will not be
+                    counted. <br>
+                    - Accumulate 6 points for each counted ride day (max 180 points). <br>
+                    - Bonus of 20 points for completing the challenge (15 counted ride days). <br>
+                    - Additional Bonus of 50 points for doing a 25+ km ride in June (single ride). <br>
+                </small>
+                </p>
+                <p>
+                <h6>2b: 30x30 </h6>
+                <small>
+                    - Do 30 rides of 30 minutes each ride in the month of June, 2019. <br>
+                    - It has to be a single ride on Strava. <br>
+                    - Multiple rides adding up to 30 minutes will not be counted. <br>
+                    - Multiple rides (of 30 minutes or more) in a day are welcome and counted. <br>
+                    - Accumulate 6 points for each counted ride (limited to max of 180 points). <br>
+                    - Bonus of 20 points for completing the challenge (30 counted rides). <br>
+                    - Additional Bonus of 50 points for doing a 3+ hour ride in June (single ride). <br>
+                </small>
+                </p>
+                <p>
+                <h6>2c: How far can you go </h6>
+                <small>
+                    - Ride as much as you want/can in June. <br>
+                    - Multiple rides per day are welcome, however, do take the time to get off the saddle once in a
+                    while. <br>
+                    - Accumulate 6 points for every 30 kms ridden (max 180 points). <br>
+                    - Bonus of 20 points for completing 1000 kms in June. <br>
+                    - Additional Bonus of 50 points for doing a 150+ km ride in June (single ride). <br>
+                </small>
+                </p>
+                </p>
+                <h4> General Conditions </h4>
+                <p>
+                    <small>
+                        - Challenge 1 is mandatory
+                        - Only one of 2a, 2b, 2c can be selected (based on your comfort/experience level). <br>
+                        - Only outdoor rides recorded on Strava can be counted. <br>
+                        - Maximum 750 points can be accumulated from the challenges. <br>
+                        - Overall leaderboard will be based on total points accumulated from both the challenges. <br>
                     </small>
                 </p>
-                <p>
-                    <small>Challenge 2: T15 <br>
-                        - Do 15 minute ride for any 15 days in the month of May, 2019. <br>
-                        - They do not have to be consecutive days. <br>
-                        - It has to be a single ride on Strava. <br>
-                        - Multiple rides adding up to 20 minutes will not be counted.
-                    </small>
-                </p>
-                <p>
-                    <small>Challenge 3: Power Play <br>
-                        - Get off to a quick start <br>
-                        - Ride as much as you want/can from 1st May to 8th May (both days inclusive) <br>
-                        - Top performers from each location will win awards.
-                    </small>
-                </p>
-                <p>
-                    <small>Challenge 4: The Middle Overs <br>
-                        - Consistency counts, keep clocking those kms <br>
-                        - Ride as much as you want/can from 9th May till 23rd May (both days inclusive). <br>
-                        - Top performers from each location will win awards.
-                    </small>
-                </p>
-                <p>
-                    <small>Challenge 5: The Final Overs <br>
-                        - Can you finish on a high? <br>
-                        - Ride as much as you want/can from 24th May till 31st May (both days inclusive) <br>
-                        - Top performers from each location will win awards.
-                    </small>
-                </p>
-                <div class="form-check">
-                    <input class="form-check-input" id="5_20" name="challenge_id" type="checkbox" value="5_20">
-                    <label class="form-check-label" for="5_20">
-                        5x20
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" id="20_20" name="challenge_id" type="checkbox" value="20_20">
-                    <label class="form-check-label" for="20_20">
-                        T20
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" id="power_play" name="challenge_id" type="checkbox"
-                           value="power_play">
-                    <label class="form-check-label" for="power_play">
-                        Power Play
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" id="middle_overs" name="challenge_id" type="checkbox"
-                           value="middle_overs">
-                    <label class="form-check-label" for="middle_overs">
-                        Middle Overs
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" id="final_overs" name="challenge_id" type="checkbox"
-                           value="final_overs">
-                    <label class="form-check-label" for="final_overs">
-                        Final Overs
-                    </label>
-                </div>
-                <br>
-                <div class="form-group">
-                    <div class="input-group">
-                        <span class="input-group-addon">Location: </span>
-                        <select class="selectpicker form-control" name="location">
-                            {% for o in data %}
-                            <option value="{{ o.name }}">{{ o.name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="ntid">NTID:</label>
-                    <input class="form-control" id="ntid" name="ntid" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="email">Official Email ID:</label>
-                    <input class="form-control" id="email" name="email" type="text">
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number:</label>
-                    <input class="form-control" id="phone" name="phone" type="text">
-                </div>
-                <br>
-                <p>
-                    <small>Select one or more challenges and click Submit</small>
-                </p>
+                {% from "_helper_challenges_bosch_even_registration.html" import render_field %}
+                <dl>
+                    {{ render_field(form.challenge_one) }}
+                    {{ render_field(form.challenge_two) }}
+                    {{ render_field(form.ntid) }}
+                    {{ render_field(form.email) }}
+                    {{ render_field(form.phone) }}
+                    {{ render_field(form.location) }}
+                </dl>
                 <center>
                     <button class="btn btn-success" type="submit">Submit</button>
                 </center>
