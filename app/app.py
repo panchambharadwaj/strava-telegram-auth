@@ -231,16 +231,15 @@ def challenges_bosch_registration_month_code(month, code):
     page_title = app_variables.challenges_bosch_even_page_title if month == "even" else app_variables.challenges_bosch_odd_page_title
     if request.method == 'POST':
         if form.validate():
-            # challenge_ids = request.form.getlist("challenge_id")
-            # location = request.form.get('location')
-            # ntid = request.form.get('ntid')
-            # email = request.form.get('email')
-            # phone = request.form.get('phone')
-            # if challenges_registration.bosch(challenge_ids, location, ntid, email, phone, month, code):
-            #     return render_template('challenges_registration_successful.html', page_title=page_title)
-            # else:
-            #     return render_template('failed.html', page_title=page_title)
-            return render_template('challenges_registration_successful.html', page_title=page_title)
+            challenge_two = form.challenge_two.data
+            ntid = form.ntid.data
+            email = form.email.data
+            phone = form.phone.data
+            location = form.location.data
+            if challenges_registration.bosch(challenge_two, location, ntid, email, phone, month, code):
+                return render_template('challenges_registration_successful.html', page_title=page_title)
+            else:
+                return render_template('failed.html', page_title=page_title)
         else:
             flash('Select a challenge/location!')
 
