@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 .idea/
 /postgresql/Dockerfile
+app/local-app.py

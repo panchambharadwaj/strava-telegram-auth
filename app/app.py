@@ -5,7 +5,7 @@ import traceback
 
 from flask import Flask, request, redirect, render_template, url_for, flash
 from scout_apm.flask import ScoutApm
-from wtforms import Form, TextAreaField, validators
+from wtforms import Form, TextAreaField, validators, RadioField, StringField, SelectField
 
 from app.commands.bot_registration import BotRegistration
 from app.commands.challenges_registration import ChallengesRegistration
@@ -37,18 +37,19 @@ class ReusableForm(Form):
     telegram_username = TextAreaField('Telegram Username:', validators=[validators.required()])
 
 
-class ReusableFormChallenges(Form):
-    challenge_id_0001 = TextAreaField("20_20", validators=[validators.required()])
-    challenge_id_0002 = TextAreaField("1000_km", validators=[validators.required()])
-    challenge_id_0003 = TextAreaField("10000_meters", validators=[validators.required()])
-
-
-class ReusableFormBoschEvenChallenges(Form):
-    challenge_id_0001 = TextAreaField("5_20", validators=[validators.required()])
-    challenge_id_0002 = TextAreaField("20_20", validators=[validators.required()])
-    challenge_id_0003 = TextAreaField("power_play", validators=[validators.required()])
-    challenge_id_0004 = TextAreaField("middle_overs", validators=[validators.required()])
-    challenge_id_0005 = TextAreaField("final_overs", validators=[validators.required()])
+class RegistrationForm(Form):
+    challenge_one = RadioField('Challenge 1:', validators=[validators.DataRequired()],
+                               choices=[('CycleToWork', 'CycleToWork')], default='CycleToWork')
+    challenge_two = RadioField('Challenge 2:', validators=[validators.DataRequired()],
+                               choices=[('6x15', '6x15'), ('30x30', '30x30'), ('distance', 'How far can you go')])
+    ntid = StringField('NTID:', validators=[validators.DataRequired()])
+    email = StringField('Official Email ID:', validators=[validators.DataRequired()])
+    phone = StringField('Phone Number:', validators=[validators.DataRequired()])
+    location = SelectField('Location:', validators=[validators.DataRequired()],
+                           choices=[("", "---"), ('EC', 'EC'), ('KOR', 'KOR'), ('BMH', 'BMH'), ('GTP', 'GTP'),
+                                    ('Audugodi', 'Audugodi'),
+                                    ('MRH', 'MRH'), ('Bellandur', 'Bellandur'), ('COB', 'COB'), ('Hyd', 'Hyd'),
+                                    ('Others', 'Others')])
 
 
 @app.route('/favicon.ico')
@@ -226,26 +227,26 @@ def challenges_bosch_odd_auth():
 @app.route("/challenges/bosch/registration/<month>/<code>", methods=['GET', 'POST'])
 @execution_time
 def challenges_bosch_registration_month_code(month, code):
-    form = ReusableFormBoschEvenChallenges(request.form)
+    form = RegistrationForm(request.form)
     page_title = app_variables.challenges_bosch_even_page_title if month == "even" else app_variables.challenges_bosch_odd_page_title
     if request.method == 'POST':
-        challenge_ids = request.form.getlist("challenge_id")
-        location = request.form.get('location')
-        ntid = request.form.get('ntid')
-        email = request.form.get('email')
-        phone = request.form.get('phone')
-        if len(challenge_ids) > 0 and location != '' and ntid != '' and email != '' and phone != '':
-            if challenges_registration.bosch(challenge_ids, location, ntid, email, phone, month, code):
-                return render_template('challenges_registration_successful.html', page_title=page_title)
-            else:
-                return render_template('failed.html', page_title=page_title)
+        if form.validate():
+            # challenge_ids = request.form.getlist("challenge_id")
+            # location = request.form.get('location')
+            # ntid = request.form.get('ntid')
+            # email = request.form.get('email')
+            # phone = request.form.get('phone')
+            # if challenges_registration.bosch(challenge_ids, location, ntid, email, phone, month, code):
+            #     return render_template('challenges_registration_successful.html', page_title=page_title)
+            # else:
+            #     return render_template('failed.html', page_title=page_title)
+            return render_template('challenges_registration_successful.html', page_title=page_title)
         else:
             flash('Select at least one challenge/location and fill in all the details!')
 
     challenges_registration_page = 'challenges_bosch_even_registration.html' if month == "even" else 'challenges_bosch_odd_registration.html'
-    locations = [{'name': ''}, {'name': 'EC'}, {'name': 'KOR'}, {'name': 'BMH'}, {'name': 'GTP'}, {'name': 'Audugodi'},
-                 {'name': 'MRH'}, {'name': 'Bellandur'}, {'name': 'COB'}, {'name': 'Hyd'}, {'name': 'Others'}]
-    return render_template(challenges_registration_page, data=locations, form=form, page_title=page_title)
+
+    return render_template(challenges_registration_page, form=form, page_title=page_title)
 
 
 if __name__ == '__main__' and __package__ is None:
