@@ -242,7 +242,7 @@ def challenges_bosch_registration_month_code(month, code):
             #     return render_template('failed.html', page_title=page_title)
             return render_template('challenges_registration_successful.html', page_title=page_title)
         else:
-            flash('Select at least one challenge/location and fill in all the details!')
+            flash('Select a challenge/location!')
 
     challenges_registration_page = 'challenges_bosch_even_registration.html' if month == "even" else 'challenges_bosch_odd_registration.html'
 
