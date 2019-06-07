@@ -159,23 +159,23 @@ def challenges_odd_auth():
         return redirect(url_for('challenges_registration_month_code', month="odd", code=code))
 
 
-@app.route("/challenges/registration/<month>/<code>", methods=['GET', 'POST'])
-@execution_time
-def challenges_registration_month_code(month, code):
-    form = ReusableFormChallenges(request.form)
-    page_title = app_variables.challenges_even_page_title if month == "even" else app_variables.challenges_odd_page_title
-    if request.method == 'POST':
-        challenge_ids = request.form.getlist("challenge_id")
-        if len(challenge_ids) > 0:
-            if challenges_registration.main(challenge_ids, month, code):
-                return render_template('challenges_registration_successful.html', page_title=page_title)
-            else:
-                return render_template('failed.html', page_title=page_title)
-        else:
-            flash('Select at least one challenge!')
-
-    challenges_registration_page = 'challenges_even_registration.html' if month == "even" else 'challenges_odd_registration.html'
-    return render_template(challenges_registration_page, form=form, page_title=page_title)
+# @app.route("/challenges/registration/<month>/<code>", methods=['GET', 'POST'])
+# @execution_time
+# def challenges_registration_month_code(month, code):
+#     form = ReusableFormChallenges(request.form)
+#     page_title = app_variables.challenges_even_page_title if month == "even" else app_variables.challenges_odd_page_title
+#     if request.method == 'POST':
+#         challenge_ids = request.form.getlist("challenge_id")
+#         if len(challenge_ids) > 0:
+#             if challenges_registration.main(challenge_ids, month, code):
+#                 return render_template('challenges_registration_successful.html', page_title=page_title)
+#             else:
+#                 return render_template('failed.html', page_title=page_title)
+#         else:
+#             flash('Select at least one challenge!')
+#
+#     challenges_registration_page = 'challenges_even_registration.html' if month == "even" else 'challenges_odd_registration.html'
+#     return render_template(challenges_registration_page, form=form, page_title=page_title)
 
 
 @app.route("/challenges/bosch/even/register")
