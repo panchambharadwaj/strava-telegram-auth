@@ -18,7 +18,7 @@ class ChallengesRegistration(object):
         self.aes_cipher = AESCipher(self.app_variables.crypt_key_length, self.app_variables.crypt_key)
 
     def main(self, challenge_ids, month, code):
-        logging.info("Challenge IDs: {challenge_ids}. Month: {month}".format(challenge_ids=challenge_ids, month=month))
+        logging.info("Challenge IDs: %s. Month: %s", challenge_ids, month)
         success = False
         access_info = self.strava_telegram_webhooks.token_exchange_for_challenges(code)
         if access_info:
@@ -50,9 +50,7 @@ class ChallengesRegistration(object):
         return success
 
     def bosch(self, challenge_ids, location, ntid, email, phone, month, code):
-        logging.info(
-            "Challenge IDs: {challenge_ids}. Month: {month}".format(challenge_ids=challenge_ids, location=location,
-                                                                    month=month))
+        logging.info("Challenge IDs: %s. Month: %s. Location: %s", challenge_ids, month, location)
         success = False
         access_info = self.strava_telegram_webhooks.token_exchange_for_challenges(code)
         if access_info:
