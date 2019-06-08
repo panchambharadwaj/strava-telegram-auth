@@ -3,7 +3,7 @@
 import os
 
 
-class AppConstants(object):
+class AppConstants:
 
     QUERY_INSERT_VALUES = "INSERT INTO strava_telegram_bot (athlete_id, name, access_token, refresh_token, " \
                           "expires_at, telegram_username, active, created) " \
@@ -70,7 +70,7 @@ class AppConstants(object):
     MESSAGE_NEW_BOSCH_CHALLENGES_REGISTRATION = "{athlete_name} registered for Bosch's {month} month's challenges.\n\nChallenge IDs: {challenge_ids}\nLocation: {location}\nNTID: {ntid}\nEmail ID: {email}\nPhone Number: {phone}"
 
 
-class AppVariables(object):
+class AppVariables:
     crypt_key_length = int(os.environ.get('CRYPT_KEY_LENGTH'))
     crypt_key = os.environ.get('CRYPT_KEY')
     client_id = os.environ.get('CLIENT_ID')

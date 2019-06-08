@@ -93,8 +93,7 @@ def registration(code):
         if request.method == 'POST':
             telegram_username = request.form['telegram_username'].strip()
             if form.validate():
-                logging.info(
-                    "Registering Telegram user: {telegram_username}..".format(telegram_username=telegram_username))
+                logging.info("Registering Telegram user: %s..", telegram_username)
                 if bot_registration.main(telegram_username, code):
                     return render_template('successful.html', page_title=app_variables.page_title,
                                            bot_url=app_variables.bot_url)

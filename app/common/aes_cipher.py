@@ -7,7 +7,7 @@ from Crypto import Random
 from Crypto.Cipher import AES
 
 
-class AESCipher(object):
+class AESCipher:
 
     def __init__(self, length, key):
         self.bs = length
