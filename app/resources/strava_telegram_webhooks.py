@@ -9,7 +9,7 @@ import ujson
 from app.common.constants_and_variables import AppVariables, AppConstants
 
 
-class StravaTelegramWebhooksResource(object):
+class StravaTelegramWebhooksResource:
 
     def __init__(self):
         self.app_variables = AppVariables()

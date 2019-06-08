@@ -9,7 +9,7 @@ from app.common.constants_and_variables import AppConstants, AppVariables
 from app.resources.strava_telegram_webhooks import StravaTelegramWebhooksResource
 
 
-class ChallengesRegistration(object):
+class ChallengesRegistration:
 
     def __init__(self):
         self.app_constants = AppConstants()
