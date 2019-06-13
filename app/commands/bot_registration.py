@@ -15,10 +15,10 @@ class BotRegistration:
         self.strava_telegram_webhooks = StravaTelegramWebhooksResource()
         self.aes_cipher = AESCipher(self.app_variables.crypt_key_length, self.app_variables.crypt_key)
 
-    def main(self, telegram_username, code):
+    def main(self, telegram_username, code, category):
         success = False
         telegram_username = telegram_username[1:] if telegram_username.startswith('@') else telegram_username
-        access_info = self.strava_telegram_webhooks.token_exchange(code)
+        access_info = self.strava_telegram_webhooks.token_exchange(category, code)
         if access_info:
             athlete_exists = self.strava_telegram_webhooks.athlete_exists(access_info['athlete_id'])
             if not athlete_exists:
@@ -51,6 +51,6 @@ class BotRegistration:
             message = "Failed to exchange token for {telegram_username}.".format(telegram_username=telegram_username)
 
         logging.info(message)
-        self.strava_telegram_webhooks.shadow_message(message)
+        self.strava_telegram_webhooks.send_message(message)
 
         return success
