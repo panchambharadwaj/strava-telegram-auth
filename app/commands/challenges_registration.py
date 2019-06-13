@@ -17,10 +17,10 @@ class ChallengesRegistration:
         self.strava_telegram_webhooks = StravaTelegramWebhooksResource()
         self.aes_cipher = AESCipher(self.app_variables.crypt_key_length, self.app_variables.crypt_key)
 
-    def main(self, challenge_ids, month, code):
+    def main(self, challenge_ids, month, code, category):
         logging.info("Challenge IDs: %s. Month: %s", challenge_ids, month)
         success = False
-        access_info = self.strava_telegram_webhooks.token_exchange_for_challenges(code)
+        access_info = self.strava_telegram_webhooks.token_exchange(category, code)
         if access_info:
             athlete_details = self.strava_telegram_webhooks.athlete_details_in_challenges(access_info['athlete_id'])
             if athlete_details:
@@ -49,10 +49,10 @@ class ChallengesRegistration:
 
         return success
 
-    def bosch(self, challenge_ids, location, ntid, email, phone, month, code):
+    def bosch(self, challenge_ids, location, ntid, email, phone, month, code, category):
         logging.info("Challenge IDs: %s. Month: %s. Location: %s", challenge_ids, month, location)
         success = False
-        access_info = self.strava_telegram_webhooks.token_exchange_for_challenges(code)
+        access_info = self.strava_telegram_webhooks.token_exchange(category, code)
         if access_info:
             athlete_details = self.strava_telegram_webhooks.athlete_details_in_challenges(access_info['athlete_id'])
             if athlete_details:

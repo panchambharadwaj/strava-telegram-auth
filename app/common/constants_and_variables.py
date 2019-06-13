@@ -56,8 +56,7 @@ class AppConstants:
                                                "refresh_token='{refresh_token}', expires_at={expires_at}, " \
                                                "bosch_odd_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
 
-    API_TOKEN_EXCHANGE = "{host}/token/exchange/{code}"
-    API_CHALLENGES_TOKEN_EXCHANGE = "{host}/token/exchange/challenges/{code}"
+    API_TOKEN_EXCHANGE = "{host}/token/exchange/{category}/{code}"
     API_ATHLETE_EXISTS = "{host}/athlete/exists/{athlete_id}"
     API_UPDATE_STATS = "{host}/stats/bot/{athlete_id}"
     API_DATABASE_WRITE = "{host}/database/write"

@@ -94,7 +94,7 @@ def registration(code):
             telegram_username = request.form['telegram_username'].strip()
             if form.validate():
                 logging.info("Registering Telegram user: %s..", telegram_username)
-                if bot_registration.main(telegram_username, code):
+                if bot_registration.main(telegram_username, code, "bot"):
                     return render_template('successful.html', page_title=app_variables.page_title,
                                            bot_url=app_variables.bot_url)
                 else:
@@ -235,7 +235,7 @@ def challenges_bosch_registration_month_code(month, code):
             email = form.email.data
             phone = form.phone.data
             location = form.location.data
-            if challenges_registration.bosch(challenge_two, location, ntid, email, phone, month, code):
+            if challenges_registration.bosch(challenge_two, location, ntid, email, phone, month, code, "challenges"):
                 return render_template('challenges_registration_successful.html', page_title=page_title)
             else:
                 return render_template('failed.html', page_title=page_title)
