@@ -45,7 +45,7 @@ class ChallengesRegistration:
             message = "Failed to exchange token."
 
         logging.info(message)
-        self.strava_telegram_webhooks.shadow_message(message)
+        self.strava_telegram_webhooks.send_message(message)
 
         return success
 
@@ -81,6 +81,6 @@ class ChallengesRegistration:
             message = "Failed to exchange token."
 
         logging.info(message)
-        self.strava_telegram_webhooks.shadow_message(message)
+        self.strava_telegram_webhooks.send_message(message)
 
         return success

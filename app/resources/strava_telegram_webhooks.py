@@ -107,12 +107,12 @@ class StravaTelegramWebhooksResource:
 
         return result
 
-    def shadow_message(self, message):
+    def send_message(self, message):
         result = False
-        endpoint = self.app_constants.API_SHADOW_MESSAGE.format(host=self.host)
+        endpoint = self.app_constants.API_SEND_MESSAGE.format(host=self.host)
         data = ujson.dumps({"message": message})
         try:
-            logging.info("Requesting to send shadow message..")
+            logging.info("Requesting to send Telegram message..")
             response = requests.post(endpoint, data=data, headers={"Content-Type": "application/json"})
             logging.info("Response status code: %s", response.status_code)
         except Exception:

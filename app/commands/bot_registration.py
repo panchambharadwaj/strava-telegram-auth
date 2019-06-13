@@ -51,6 +51,6 @@ class BotRegistration:
             message = "Failed to exchange token for {telegram_username}.".format(telegram_username=telegram_username)
 
         logging.info(message)
-        self.strava_telegram_webhooks.shadow_message(message)
+        self.strava_telegram_webhooks.send_message(message)
 
         return success

@@ -60,7 +60,7 @@ class AppConstants:
     API_ATHLETE_EXISTS = "{host}/athlete/exists/{athlete_id}"
     API_UPDATE_STATS = "{host}/stats/bot/{athlete_id}"
     API_DATABASE_WRITE = "{host}/database/write"
-    API_SHADOW_MESSAGE = "{host}/telegram/shadow_message"
+    API_SEND_MESSAGE = "{host}/telegram/send_message"
     API_ATHLETE_DETAILS_IN_CHALLENGES = "{host}/challenges/athlete/{athlete_id}"
     API_ATHLETE_CALCULATE_CHALLENGES = "{host}/stats/challenges/{athlete_id}"
 
