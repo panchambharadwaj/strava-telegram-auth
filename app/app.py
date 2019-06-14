@@ -33,11 +33,11 @@ app.config['SCOUT_KEY'] = app_variables.scout_key
 app.config['SCOUT_NAME'] = app_variables.scout_name
 
 
-class ReusableForm(Form):
+class RegistrationBot(Form):
     telegram_username = TextAreaField('Telegram Username:', validators=[validators.required()])
 
 
-class RegistrationForm(Form):
+class RegistrationFormBoschEven(Form):
     challenge_one = RadioField('Challenge 1:', validators=[validators.DataRequired()],
                                choices=[('CycleToWork', 'CycleToWork')], default='CycleToWork')
     challenge_two = RadioField('Challenge 2:', validators=[validators.DataRequired()],
@@ -50,6 +50,40 @@ class RegistrationForm(Form):
                                     ('Audugodi', 'Audugodi'),
                                     ('MRH', 'MRH'), ('Bellandur', 'Bellandur'), ('COB', 'COB'), ('Hyd', 'Hyd'),
                                     ('Others', 'Others')])
+
+
+class RegistrationFormCadence90Odd(Form):
+    utr = StringField('UTR / Bank Reference No.:', validators=[validators.DataRequired()])
+    email = StringField('Email ID:', validators=[validators.DataRequired()])
+    phone = StringField('Phone Number:', validators=[validators.DataRequired()])
+
+
+REGISTRATION = {
+    "cadence90": {
+        "odd": {
+            "page_title": app_variables.challenges_odd_page_title,
+            "form": RegistrationFormCadence90Odd(request.form),
+            "registration": "challenges_cadence90_odd_registration.html"
+        },
+        "even": {
+            "page_title": app_variables.challenges_even_page_title,
+            "form": "",
+            "registration": "challenges_cadence90_even_registration.html"
+        }
+    },
+    "bosch": {
+        "odd": {
+            "page_title": app_variables.challenges_bosch_odd_page_title,
+            "form": "",
+            "registration": "challenges_bosch_odd_registration.html"
+        },
+        "even": {
+            "page_title": app_variables.challenges_bosch_even_page_title,
+            "form": RegistrationFormBoschEven(request.form),
+            "registration": "challenges_bosch_even_registration.html"
+        }
+    },
+}
 
 
 @app.route('/favicon.ico')
@@ -89,7 +123,7 @@ def auth_callback():
 @execution_time
 def registration(code):
     try:
-        form = ReusableForm(request.form)
+        form = RegistrationBot(request.form)
         if request.method == 'POST':
             telegram_username = request.form['telegram_username'].strip()
             if form.validate():
@@ -112,138 +146,53 @@ def registration(code):
         strava_telegram_webhooks.send_message(message)
 
 
-@app.route("/challenges/even/register")
-def challenges_even_register():
-    strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
-                                                                      redirect_uri=app_variables.challenges_even_redirect_uri,
-                                                                      scope=app_variables.strava_challenges_auth_scope)
-    return redirect(strava_auth_url, code=302)
+@app.route("/register/challenges/<company>/<month>")
+def challenges_register(company, month):
+    logging.info("Register - Company: %s | Month: %s", company, month)
+    if company in REGISTRATION and month in REGISTRATION[company]:
+        redirect_uri = app_variables.challenges_redirect_uri.format(app_host=app_variables.app_host, company=company,
+                                                                    month=month)
+        strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
+                                                                          redirect_uri=redirect_uri,
+                                                                          scope=app_variables.strava_challenges_auth_scope)
+        return redirect(strava_auth_url, code=302)
 
 
-@app.route("/challenges/odd/register")
-def challenges_odd_register():
-    strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
-                                                                      redirect_uri=app_variables.challenges_odd_redirect_uri,
-                                                                      scope=app_variables.strava_challenges_auth_scope)
-    return redirect(strava_auth_url, code=302)
-
-
-@app.route("/challenges/even/auth")
-def challenges_even_auth():
+@app.route("/auth/challenges/<company>/<month>")
+def challenges_auth(company, month):
+    logging.info("Auth - Company: %s | Month: %s", company, month)
     code = request.args.get('code')
     permissions = request.args.get('scope')
     if permissions != app_variables.strava_challenges_auth_scope:
-        page_title = app_variables.challenges_even_page_title
+        page_title = REGISTRATION[company][month]['page_title']
+        redirect_uri = app_variables.challenges_redirect_uri.format(app_host=app_variables.app_host, company=company,
+                                                                    month=month)
         strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
-                                                                          redirect_uri=app_variables.challenges_even_redirect_uri,
+                                                                          redirect_uri=redirect_uri,
                                                                           scope=app_variables.strava_challenges_auth_scope)
-        strava_telegram_webhooks.send_message("Insufficient permissions for challenges.")
+        strava_telegram_webhooks.send_message(
+            "Insufficient permissions for {company} {month} challenge.".format(company=company, month=month))
         return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
     else:
-        return redirect(url_for('challenges_registration_month_code', month="even", code=code))
+        return redirect(url_for('challenges_registration', company=company, month=month, code=code))
 
 
-@app.route("/challenges/odd/auth")
-def challenges_odd_auth():
-    code = request.args.get('code')
-    permissions = request.args.get('scope')
-    if permissions != app_variables.strava_challenges_auth_scope:
-        page_title = app_variables.challenges_odd_page_title
-        strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
-                                                                          redirect_uri=app_variables.challenges_odd_redirect_uri,
-                                                                          scope=app_variables.strava_challenges_auth_scope)
-        strava_telegram_webhooks.send_message("Insufficient permissions for challenges.")
-        return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
-    else:
-        return redirect(url_for('challenges_registration_month_code', month="odd", code=code))
-
-
-# @app.route("/challenges/registration/<month>/<code>", methods=['GET', 'POST'])
-# @execution_time
-# def challenges_registration_month_code(month, code):
-#     form = ReusableFormChallenges(request.form)
-#     page_title = app_variables.challenges_even_page_title if month == "even" else app_variables.challenges_odd_page_title
-#     if request.method == 'POST':
-#         challenge_ids = request.form.getlist("challenge_id")
-#         if len(challenge_ids) > 0:
-#             if challenges_registration.main(challenge_ids, month, code):
-#                 return render_template('challenges_registration_successful.html', page_title=page_title)
-#             else:
-#                 return render_template('failed.html', page_title=page_title)
-#         else:
-#             flash('Select at least one challenge!')
-#
-#     challenges_registration_page = 'challenges_even_registration.html' if month == "even" else 'challenges_odd_registration.html'
-#     return render_template(challenges_registration_page, form=form, page_title=page_title)
-
-
-@app.route("/challenges/bosch/even/register")
-def challenges_bosch_even_register():
-    strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
-                                                                      redirect_uri=app_variables.challenges_bosch_even_redirect_uri,
-                                                                      scope=app_variables.strava_challenges_auth_scope)
-    return redirect(strava_auth_url, code=302)
-
-
-@app.route("/challenges/bosch/odd/register")
-def challenges_bosch_odd_register():
-    strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
-                                                                      redirect_uri=app_variables.challenges_bosch_odd_redirect_uri,
-                                                                      scope=app_variables.strava_challenges_auth_scope)
-    return redirect(strava_auth_url, code=302)
-
-
-@app.route("/challenges/bosch/even/auth")
-def challenges_bosch_even_auth():
-    code = request.args.get('code')
-    permissions = request.args.get('scope')
-    if permissions != app_variables.strava_challenges_auth_scope:
-        page_title = app_variables.challenges_bosch_even_page_title
-        strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
-                                                                          redirect_uri=app_variables.challenges_bosch_even_redirect_uri,
-                                                                          scope=app_variables.strava_challenges_auth_scope)
-        strava_telegram_webhooks.send_message("Insufficient permissions for Bosch challenges.")
-        return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
-    else:
-        return redirect(url_for('challenges_bosch_registration_month_code', month="even", code=code))
-
-
-@app.route("/challenges/bosch/odd/auth")
-def challenges_bosch_odd_auth():
-    code = request.args.get('code')
-    permissions = request.args.get('scope')
-    if permissions != app_variables.strava_challenges_auth_scope:
-        page_title = app_variables.challenges_bosch_odd_page_title
-        strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
-                                                                          redirect_uri=app_variables.challenges_bosch_odd_redirect_uri,
-                                                                          scope=app_variables.strava_challenges_auth_scope)
-        strava_telegram_webhooks.send_message("Insufficient permissions for Bosch challenges.")
-        return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
-    else:
-        return redirect(url_for('challenges_bosch_registration_month_code', month="odd", code=code))
-
-
-@app.route("/challenges/bosch/registration/<month>/<code>", methods=['GET', 'POST'])
+@app.route("/registration/challenges/<company>/<month>/<code>", methods=['GET', 'POST'])
 @execution_time
-def challenges_bosch_registration_month_code(month, code):
-    form = RegistrationForm(request.form)
-    page_title = app_variables.challenges_bosch_even_page_title if month == "even" else app_variables.challenges_bosch_odd_page_title
+def challenges_registration(company, month, code):
+    logging.info("Registration - Company: %s | Month: %s", company, month)
+    form = REGISTRATION[company][month]['form']
+    page_title = REGISTRATION[company][month]['page_title']
     if request.method == 'POST':
         if form.validate():
-            challenge_two = form.challenge_two.data
-            ntid = form.ntid.data
-            email = form.email.data
-            phone = form.phone.data
-            location = form.location.data
-            if challenges_registration.bosch(challenge_two, location, ntid, email, phone, month, code, "challenges"):
+            if challenges_registration.main(company, month, code, form):
                 return render_template('challenges_registration_successful.html', page_title=page_title)
             else:
                 return render_template('failed.html', page_title=page_title)
         else:
-            flash('Select a challenge/location!')
+            flash("Select / Fill appropriate fields.")
 
-    challenges_registration_page = 'challenges_bosch_even_registration.html' if month == "even" else 'challenges_bosch_odd_registration.html'
-
+    challenges_registration_page = REGISTRATION[company][month]['registration']
     return render_template(challenges_registration_page, form=form, page_title=page_title)
 
 

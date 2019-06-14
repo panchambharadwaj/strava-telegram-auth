@@ -65,8 +65,7 @@ class AppConstants:
     API_ATHLETE_CALCULATE_CHALLENGES = "{host}/stats/challenges/{athlete_id}"
 
     MESSAGE_NEW_REGISTRATION = "{athlete_name} registered with Telegram username `{telegram_username}`"
-    MESSAGE_NEW_CHALLENGES_REGISTRATION = "{athlete_name} registered for {month} month's challenges.\n\nChallenge IDs: {challenge_ids}"
-    MESSAGE_NEW_BOSCH_CHALLENGES_REGISTRATION = "{athlete_name} registered for Bosch's {month} month's challenges.\n\nChallenge IDs: {challenge_ids}\nLocation: {location}\nNTID: {ntid}\nEmail ID: {email}\nPhone Number: {phone}"
+    MESSAGE_NEW_CHALLENGES_REGISTRATION = "{athlete_name} registered for {company} {month} month challenge.\n\nData: {data}"
 
 
 class AppVariables:
@@ -79,10 +78,7 @@ class AppVariables:
     strava_challenges_auth_url = os.environ.get('STRAVA_CHALLENGES_AUTH_URL')
     strava_challenges_auth_scope = os.environ.get('STRAVA_CHALLENGES_AUTH_SCOPE')
     redirect_uri = os.environ.get('REDIRECT_URI')
-    challenges_even_redirect_uri = os.environ.get('CHALLENGES_EVEN_REDIRECT_URI')
-    challenges_odd_redirect_uri = os.environ.get('CHALLENGES_ODD_REDIRECT_URI')
-    challenges_bosch_even_redirect_uri = os.environ.get('CHALLENGES_BOSCH_EVEN_REDIRECT_URI')
-    challenges_bosch_odd_redirect_uri = os.environ.get('CHALLENGES_BOSCH_ODD_REDIRECT_URI')
+    challenges_redirect_uri = os.environ.get('CHALLENGES_REDIRECT_URI')
     page_title = os.environ.get('PAGE_TITLE')
     challenges_even_page_title = os.environ.get('CHALLENGES_EVEN_PAGE_TITLE')
     challenges_odd_page_title = os.environ.get('CHALLENGES_ODD_PAGE_TITLE')
