@@ -174,7 +174,7 @@ def challenges_auth(company, month):
             "Insufficient permissions for {company} {month} challenge.".format(company=company, month=month))
         return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
     else:
-        return redirect(url_for('challenges_registration', company=company, month=month, code=code))
+        return redirect(url_for('register_for_challenges', company=company, month=month, code=code))
 
 
 @app.route("/registration/challenges/<company>/<month>/<code>", methods=['GET', 'POST'])
