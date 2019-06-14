@@ -62,7 +62,7 @@ REGISTRATION = {
     "cadence90": {
         "odd": {
             "page_title": app_variables.challenges_odd_page_title,
-            "form": RegistrationFormCadence90Odd(request.form),
+            "form": RegistrationFormCadence90Odd,
             "registration": "challenges_cadence90_odd_registration.html"
         },
         "even": {
@@ -79,7 +79,7 @@ REGISTRATION = {
         },
         "even": {
             "page_title": app_variables.challenges_bosch_even_page_title,
-            "form": RegistrationFormBoschEven(request.form),
+            "form": RegistrationFormBoschEven,
             "registration": "challenges_bosch_even_registration.html"
         }
     },
@@ -181,7 +181,7 @@ def challenges_auth(company, month):
 @execution_time
 def challenges_registration(company, month, code):
     logging.info("Registration - Company: %s | Month: %s", company, month)
-    form = REGISTRATION[company][month]['form']
+    form = REGISTRATION[company][month]['form'](request.form)
     page_title = REGISTRATION[company][month]['page_title']
     if request.method == 'POST':
         if form.validate():
