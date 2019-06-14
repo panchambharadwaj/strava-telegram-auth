@@ -179,7 +179,7 @@ def challenges_auth(company, month):
 
 @app.route("/registration/challenges/<company>/<month>/<code>", methods=['GET', 'POST'])
 @execution_time
-def challenges_registration(company, month, code):
+def register_for_challenges(company, month, code):
     logging.info("Registration - Company: %s | Month: %s", company, month)
     form = REGISTRATION[company][month]['form'](request.form)
     page_title = REGISTRATION[company][month]['page_title']
