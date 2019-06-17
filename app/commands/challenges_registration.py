@@ -122,7 +122,7 @@ class ChallengesRegistration:
                 message = self.app_constants.MESSAGE_NEW_CHALLENGES_REGISTRATION.format(
                     athlete_name=access_info['name'], company=company, month=month, data=challenge_ids)
 
-                if self.challenges_config[company][month]['payment_approval']:
+                if self.challenges_config[company][month]['payment_approval'] and not challenge_ids['payment']:
                     payment_approval_message, payment_approval_callback_data = self.challenges_config[company][month][
                         'payment_approval_details'](access_info, form)
                     self.strava_telegram_webhooks.send_payment_approval_message(payment_approval_message,
