@@ -63,7 +63,7 @@ class ChallengesRegistration:
     @staticmethod
     def cadence90_odd_payment(access_info, form):
         payment_approval_message = "{name} ({athlete_id}) registered for Cadence90 odd month challenge.\n\nUTR: {utr}\nPhone: {phone}\nEmail ID: {email}\n\nApprove payment?"
-        payment_approval_callback_data = "pa_challenges_cadence90_odd_{name}_{athlete_id}"
+        payment_approval_callback_data = "pa_challenges_cadence90_odd_{athlete_id}"
 
         payment_approval_message = payment_approval_message.format(name=access_info['name'],
                                                                    athlete_id=access_info['athlete_id'],
@@ -71,9 +71,7 @@ class ChallengesRegistration:
                                                                    phone=form.phone.data,
                                                                    email=form.email.data)
 
-        payment_approval_callback_data = payment_approval_callback_data.format(
-            name=access_info['name'].replace(" ", "-"),
-            athlete_id=access_info['athlete_id'])
+        payment_approval_callback_data = payment_approval_callback_data.format(athlete_id=access_info['athlete_id'])
 
         return payment_approval_message, payment_approval_callback_data
 
@@ -122,7 +120,7 @@ class ChallengesRegistration:
                 message = self.app_constants.MESSAGE_NEW_CHALLENGES_REGISTRATION.format(
                     athlete_name=access_info['name'], company=company, month=month, data=challenge_ids)
 
-                if self.challenges_config[company][month]['payment_approval'] and not challenge_ids['payment']:
+                if self.challenges_config[company][month]['payment_approval']:
                     payment_approval_message, payment_approval_callback_data = self.challenges_config[company][month][
                         'payment_approval_details'](access_info, form)
                     self.strava_telegram_webhooks.send_payment_approval_message(payment_approval_message,
