@@ -5,12 +5,12 @@ import traceback
 
 from flask import Flask, request, redirect, render_template, url_for, flash
 from scout_apm.flask import ScoutApm
-from wtforms import Form, TextAreaField, validators, RadioField, StringField, SelectField
 
 from app.commands.bot_registration import BotRegistration
 from app.commands.challenges_registration import ChallengesRegistration
 from app.common.constants_and_variables import AppVariables
 from app.common.execution_time import execution_time
+from app.common.forms import RegistrationBot, RegistrationFormBoschEven, RegistrationFormCadence90Odd
 from app.resources.strava_telegram_webhooks import StravaTelegramWebhooksResource
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -31,31 +31,6 @@ ScoutApm(app)
 app.config['SCOUT_MONITOR'] = app_variables.scout_monitor
 app.config['SCOUT_KEY'] = app_variables.scout_key
 app.config['SCOUT_NAME'] = app_variables.scout_name
-
-
-class RegistrationBot(Form):
-    telegram_username = TextAreaField('Telegram Username:', validators=[validators.required()])
-
-
-class RegistrationFormBoschEven(Form):
-    challenge_one = RadioField('Challenge 1:', validators=[validators.DataRequired()],
-                               choices=[('CycleToWork', 'CycleToWork')], default='CycleToWork')
-    challenge_two = RadioField('Challenge 2:', validators=[validators.DataRequired()],
-                               choices=[('6x15', '6x15'), ('30x30', '30x30'), ('distance', 'How far can you go')])
-    ntid = StringField('NTID:', validators=[validators.DataRequired()])
-    email = StringField('Official Email ID:', validators=[validators.DataRequired()])
-    phone = StringField('Phone Number:', validators=[validators.DataRequired()])
-    location = SelectField('Location:', validators=[validators.DataRequired()],
-                           choices=[("", "---"), ('EC', 'EC'), ('KOR', 'KOR'), ('BMH', 'BMH'), ('GTP', 'GTP'),
-                                    ('Audugodi', 'Audugodi'),
-                                    ('MRH', 'MRH'), ('Bellandur', 'Bellandur'), ('COB', 'COB'), ('Hyd', 'Hyd'),
-                                    ('Others', 'Others')])
-
-
-class RegistrationFormCadence90Odd(Form):
-    utr = StringField('UTR / Bank Reference No.:', validators=[validators.DataRequired()])
-    phone = StringField('Phone Number:', validators=[validators.DataRequired()])
-    email = StringField('Email ID:', validators=[validators.DataRequired()])
 
 
 CHALLENGES_REGISTRATION = {
