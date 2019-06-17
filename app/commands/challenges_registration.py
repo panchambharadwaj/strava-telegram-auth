@@ -71,8 +71,9 @@ class ChallengesRegistration:
                                                                    phone=form.phone.data,
                                                                    email=form.email.data)
 
-        payment_approval_callback_data = payment_approval_callback_data.format(name=access_info['name'],
-                                                                               athlete_id=access_info['athlete_id'])
+        payment_approval_callback_data = payment_approval_callback_data.format(
+            name=access_info['name'].replace(" ", "-"),
+            athlete_id=access_info['athlete_id'])
 
         return payment_approval_message, payment_approval_callback_data
 
