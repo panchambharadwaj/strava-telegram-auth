@@ -147,7 +147,7 @@ def registration(code):
 
 
 @app.route("/register/challenges/<company>/<month>")
-def challenges_register(company, month):
+def challenges_register_redirect(company, month):
     logging.info("Register - Company: %s | Month: %s", company, month)
     if company in REGISTRATION and month in REGISTRATION[company]:
         redirect_uri = app_variables.challenges_redirect_uri.format(app_host=app_variables.app_host, company=company,
@@ -174,12 +174,12 @@ def challenges_auth(company, month):
             "Insufficient permissions for {company} {month} challenge.".format(company=company, month=month))
         return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
     else:
-        return redirect(url_for('register_for_challenges', company=company, month=month, code=code))
+        return redirect(url_for('challenges_register', company=company, month=month, code=code))
 
 
 @app.route("/registration/challenges/<company>/<month>/<code>", methods=['GET', 'POST'])
 @execution_time
-def register_for_challenges(company, month, code):
+def challenges_register(company, month, code):
     logging.info("Registration - Company: %s | Month: %s", company, month)
     form = REGISTRATION[company][month]['form'](request.form)
     page_title = REGISTRATION[company][month]['page_title']
