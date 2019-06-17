@@ -102,37 +102,36 @@ class ChallengesRegistration:
     def bosch_even_payment(self, athlete_details, challenge_details):
         pass
 
+    def send_registration_for_payment_approval(self, company, month, athlete_details, access_info, form):
+        payment_approval_message, payment_approval_callback_data = self.challenges_config[company][month][
+            'payment_approval_details'](athlete_details, access_info, form)
+        if payment_approval_message and payment_approval_callback_data:
+            self.strava_telegram_webhooks.send_payment_approval_message(payment_approval_message,
+                                                                        payment_approval_callback_data)
+        else:
+            self.strava_telegram_webhooks.update_challenges_stats(access_info['athlete_id'])
+
     def main(self, company, month, code, form):
         success = False
         access_info = self.strava_telegram_webhooks.token_exchange("challenges", code)
         if access_info:
             athlete_details = self.strava_telegram_webhooks.athlete_details_in_challenges(access_info['athlete_id'])
-            if athlete_details:
-                query = self.challenges_config[company][month]['query_update']
-            else:
-                query = self.challenges_config[company][month]['query_insert']
-
+            query = self.challenges_config[company][month]['query_update'] if athlete_details else \
+            self.challenges_config[company][month]['query_insert']
             challenge_ids = ujson.dumps(self.challenges_config[company][month]['challenge_ids'](athlete_details, form))
-
             if self.strava_telegram_webhooks.database_write(
                     query.format(athlete_id=access_info['athlete_id'], name=access_info['name'],
                                  access_token=self.aes_cipher.encrypt(access_info['access_token']),
                                  refresh_token=self.aes_cipher.encrypt(access_info['refresh_token']),
                                  expires_at=access_info['expires_at'], challenge_ids=challenge_ids)):
-                success = True
-                message = self.app_constants.MESSAGE_NEW_CHALLENGES_REGISTRATION.format(
-                    athlete_name=access_info['name'], company=company, month=month, data=challenge_ids)
-
                 if self.challenges_config[company][month]['payment_approval']:
-                    payment_approval_message, payment_approval_callback_data = self.challenges_config[company][month][
-                        'payment_approval_details'](athlete_details, access_info, form)
-                    if payment_approval_message and payment_approval_callback_data:
-                        self.strava_telegram_webhooks.send_payment_approval_message(payment_approval_message,
-                                                                                    payment_approval_callback_data)
-                    else:
-                        self.strava_telegram_webhooks.update_challenges_stats(access_info['athlete_id'])
+                    self.send_registration_for_payment_approval(company, month, athlete_details, access_info, form)
                 else:
                     self.strava_telegram_webhooks.update_challenges_stats(access_info['athlete_id'])
+
+                message = self.app_constants.MESSAGE_NEW_CHALLENGES_REGISTRATION.format(
+                    athlete_name=access_info['name'], company=company, month=month, data=challenge_ids)
+                success = True
             else:
                 message = "Failed to write {athlete_name}'s info into database.".format(
                     athlete_name=access_info['name'])
