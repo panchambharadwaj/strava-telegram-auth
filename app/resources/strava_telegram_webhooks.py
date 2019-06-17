@@ -122,3 +122,19 @@ class StravaTelegramWebhooksResource:
                 result = True
 
         return result
+
+    def send_payment_approval_message(self, message, callback_data):
+        result = False
+        endpoint = self.app_constants.API_SEND_APPROVAL_MESSAGE.format(host=self.host)
+        data = ujson.dumps({"message": message, "callback_data": callback_data})
+        try:
+            logging.info("Requesting to send Telegram message for payment approval..")
+            response = requests.post(endpoint, data=data, headers={"Content-Type": "application/json"})
+            logging.info("Response status code: %s", response.status_code)
+        except Exception:
+            logging.error(traceback.format_exc())
+        else:
+            if response.status_code == 200:
+                result = True
+
+        return result
