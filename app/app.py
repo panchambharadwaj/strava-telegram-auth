@@ -164,8 +164,6 @@ def challenges_register(company, month, code):
                 return render_template('challenges_registration_successful.html', page_title=page_title)
             else:
                 return render_template('failed.html', page_title=page_title)
-        else:
-            flash("Select / Fill appropriate fields.")
 
     challenges_registration_page = CHALLENGES_REGISTRATION[company][month]['registration']
     return render_template(challenges_registration_page, form=form, page_title=page_title)

@@ -1,4 +1,6 @@
 from wtforms import Form, TextAreaField, validators, RadioField, StringField, SelectField
+from wtforms.fields.html5 import EmailField
+from wtforms.validators import Length
 
 
 class RegistrationBot(Form):
@@ -22,5 +24,5 @@ class RegistrationFormBoschEven(Form):
 
 class RegistrationFormCadence90Odd(Form):
     utr = StringField('UTR / Bank Reference No.:', validators=[validators.DataRequired()])
-    phone = StringField('Phone Number:', validators=[validators.DataRequired()])
-    email = StringField('Email ID:', validators=[validators.DataRequired()])
+    phone = StringField('Phone Number:', validators=[validators.DataRequired(), Length(min=6, max=15)])
+    email = EmailField('Email ID:', validators=[validators.DataRequired(), validators.Email()])

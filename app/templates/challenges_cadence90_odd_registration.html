@@ -27,17 +27,6 @@
                     <button class="btn btn-success" type="submit">Submit</button>
                 </center>
             </form>
-            <br>
-            {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-            {% for message in messages %}
-            <div class="alert alert-danger">
-                <strong></strong> {{ message[1] }}
-            </div>
-            challenge_id
-            {% endfor %}
-            {% endif %}
-            {% endwith %}
         </div>
         <br>
     </div>
