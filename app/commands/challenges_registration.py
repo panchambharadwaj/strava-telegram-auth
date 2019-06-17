@@ -63,7 +63,7 @@ class ChallengesRegistration:
     @staticmethod
     def cadence90_odd_payment(access_info, form):
         payment_approval_message = "{name} ({athlete_id}) registered for Cadence90 odd month challenge.\n\nUTR: {utr}\nPhone: {phone}\nEmail ID: {email}\n\nApprove payment?"
-        payment_approval_callback_data = "payment_approved_challenges_cadence90_odd_{name}_{athlete_id}"
+        payment_approval_callback_data = "pa_challenges_cadence90_odd_{name}_{athlete_id}"
 
         payment_approval_message = payment_approval_message.format(name=access_info['name'],
                                                                    athlete_id=access_info['athlete_id'],
