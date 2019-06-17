@@ -17,13 +17,13 @@
     <div class="row align-items-center justify-content-center">
         <div class="col-md-4">
             <form action="" method="post" role="form">
-                {% from "_helper_challenges_registration.html" import render_field %}
-                <dl>
-                    {{ render_field(form.utr) }}
-                    {{ render_field(form.phone) }}
-                    {{ render_field(form.email) }}
-                </dl>
                 <center>
+                    {% from "_helper_challenges_registration.html" import render_field %}
+                    <dl>
+                        {{ render_field(form.utr) }}
+                        {{ render_field(form.phone) }}
+                        {{ render_field(form.email) }}
+                    </dl>
                     <button class="btn btn-success" type="submit">Submit</button>
                 </center>
             </form>
