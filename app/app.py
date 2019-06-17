@@ -54,11 +54,11 @@ class RegistrationFormBoschEven(Form):
 
 class RegistrationFormCadence90Odd(Form):
     utr = StringField('UTR / Bank Reference No.:', validators=[validators.DataRequired()])
-    email = StringField('Email ID:', validators=[validators.DataRequired()])
     phone = StringField('Phone Number:', validators=[validators.DataRequired()])
+    email = StringField('Email ID:', validators=[validators.DataRequired()])
 
 
-REGISTRATION = {
+CHALLENGES_REGISTRATION = {
     "cadence90": {
         "odd": {
             "page_title": app_variables.challenges_odd_page_title,
@@ -149,7 +149,7 @@ def registration(code):
 @app.route("/register/challenges/<company>/<month>")
 def challenges_register_redirect(company, month):
     logging.info("Register - Company: %s | Month: %s", company, month)
-    if company in REGISTRATION and month in REGISTRATION[company]:
+    if company in CHALLENGES_REGISTRATION and month in CHALLENGES_REGISTRATION[company]:
         redirect_uri = app_variables.challenges_redirect_uri.format(app_host=app_variables.app_host, company=company,
                                                                     month=month)
         strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
@@ -164,7 +164,7 @@ def challenges_auth(company, month):
     code = request.args.get('code')
     permissions = request.args.get('scope')
     if permissions != app_variables.strava_challenges_auth_scope:
-        page_title = REGISTRATION[company][month]['page_title']
+        page_title = CHALLENGES_REGISTRATION[company][month]['page_title']
         redirect_uri = app_variables.challenges_redirect_uri.format(app_host=app_variables.app_host, company=company,
                                                                     month=month)
         strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
@@ -181,8 +181,8 @@ def challenges_auth(company, month):
 @execution_time
 def challenges_register(company, month, code):
     logging.info("Registration - Company: %s | Month: %s", company, month)
-    form = REGISTRATION[company][month]['form'](request.form)
-    page_title = REGISTRATION[company][month]['page_title']
+    form = CHALLENGES_REGISTRATION[company][month]['form'](request.form)
+    page_title = CHALLENGES_REGISTRATION[company][month]['page_title']
     if request.method == 'POST':
         if form.validate():
             if challenges_registration.main(company, month, code, form):
@@ -192,7 +192,7 @@ def challenges_register(company, month, code):
         else:
             flash("Select / Fill appropriate fields.")
 
-    challenges_registration_page = REGISTRATION[company][month]['registration']
+    challenges_registration_page = CHALLENGES_REGISTRATION[company][month]['registration']
     return render_template(challenges_registration_page, form=form, page_title=page_title)
 
 

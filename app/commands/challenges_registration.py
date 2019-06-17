@@ -44,11 +44,15 @@ class ChallengesRegistration:
         }
 
     @staticmethod
-    def cadence90_odd(form):
-        utr = form.ntid.data
+    def cadence90_odd(athlete_details, form):
+        utr = form.utr.data
         email = form.email.data
         phone = form.phone.data
-        return {'utr': utr, 'email': email, 'phone': phone}
+        payment = False
+        if athlete_details:
+            if 'payment' in athlete_details['odd_challenges']:
+                payment = athlete_details['odd_challenges']['payment']
+        return {'utr': utr, 'phone': phone, 'email': email, 'payment': payment}
 
     def cadence90_even(self):
         pass
@@ -57,7 +61,7 @@ class ChallengesRegistration:
         pass
 
     @staticmethod
-    def bosch_even(form):
+    def bosch_even(athlete_details, form):
         challenge_ids = form.challenge_two.data
         ntid = form.ntid.data
         email = form.email.data
@@ -75,7 +79,7 @@ class ChallengesRegistration:
             else:
                 query = self.challenges_config[company][month]['query_insert']
 
-            challenge_ids = ujson.dumps(self.challenges_config[company][month]['challenge_ids'](form))
+            challenge_ids = ujson.dumps(self.challenges_config[company][month]['challenge_ids'](athlete_details, form))
 
             if self.strava_telegram_webhooks.database_write(
                     query.format(athlete_id=access_info['athlete_id'], name=access_info['name'],
