@@ -61,17 +61,20 @@ class ChallengesRegistration:
         return {'utr': utr, 'phone': phone, 'email': email, 'payment': payment}
 
     @staticmethod
-    def cadence90_odd_payment(access_info, form):
-        payment_approval_message = "{name} ({athlete_id}) registered for Cadence90 odd month challenge.\n\nUTR: {utr}\nPhone: {phone}\nEmail ID: {email}\n\nApprove payment?"
-        payment_approval_callback_data = "pa_challenges_cadence90_odd_{athlete_id}"
+    def cadence90_odd_payment(athlete_details, access_info, form):
+        payment_approval_message = payment_approval_callback_data = None
+        if not athlete_details or 'payment' not in athlete_details['odd_challenges'] or not \
+        athlete_details['odd_challenges']['payment']:
+            payment_approval_message = "{name} ({athlete_id}) registered for Cadence90 odd month challenge.\n\nUTR: {utr}\nPhone: {phone}\nEmail ID: {email}\n\nApprove payment?"
+            payment_approval_callback_data = "pa_challenges_cadence90_odd_{athlete_id}"
 
-        payment_approval_message = payment_approval_message.format(name=access_info['name'],
-                                                                   athlete_id=access_info['athlete_id'],
-                                                                   utr=form.utr.data,
-                                                                   phone=form.phone.data,
-                                                                   email=form.email.data)
+            payment_approval_message = payment_approval_message.format(name=access_info['name'],
+                                                                       athlete_id=access_info['athlete_id'],
+                                                                       utr=form.utr.data,
+                                                                       phone=form.phone.data,
+                                                                       email=form.email.data)
 
-        payment_approval_callback_data = payment_approval_callback_data.format(athlete_id=access_info['athlete_id'])
+            payment_approval_callback_data = payment_approval_callback_data.format(athlete_id=access_info['athlete_id'])
 
         return payment_approval_message, payment_approval_callback_data
 
@@ -122,9 +125,12 @@ class ChallengesRegistration:
 
                 if self.challenges_config[company][month]['payment_approval']:
                     payment_approval_message, payment_approval_callback_data = self.challenges_config[company][month][
-                        'payment_approval_details'](access_info, form)
-                    self.strava_telegram_webhooks.send_payment_approval_message(payment_approval_message,
-                                                                                payment_approval_callback_data)
+                        'payment_approval_details'](athlete_details, access_info, form)
+                    if payment_approval_message and payment_approval_callback_data:
+                        self.strava_telegram_webhooks.send_payment_approval_message(payment_approval_message,
+                                                                                    payment_approval_callback_data)
+                    else:
+                        self.strava_telegram_webhooks.update_challenges_stats(access_info['athlete_id'])
                 else:
                     self.strava_telegram_webhooks.update_challenges_stats(access_info['athlete_id'])
             else:
