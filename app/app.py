@@ -38,24 +38,28 @@ CHALLENGES_REGISTRATION = {
         "odd": {
             "page_title": app_variables.challenges_odd_page_title,
             "form": RegistrationFormCadence90Odd,
-            "registration": "challenges_cadence90_odd_registration.html"
+            "registration": "challenges_cadence90_odd_registration.html",
+            "registration_confirmation": "challenges_cadence90_odd_registration_successful.html"
         },
         "even": {
             "page_title": app_variables.challenges_even_page_title,
             "form": "",
-            "registration": "challenges_cadence90_even_registration.html"
+            "registration": "challenges_cadence90_even_registration.html",
+            "registration_confirmation": "challenges_registration_successful.html"
         }
     },
     "bosch": {
         "odd": {
             "page_title": app_variables.challenges_bosch_odd_page_title,
             "form": "",
-            "registration": "challenges_bosch_odd_registration.html"
+            "registration": "challenges_bosch_odd_registration.html",
+            "registration_confirmation": "challenges_registration_successful.html"
         },
         "even": {
             "page_title": app_variables.challenges_bosch_even_page_title,
             "form": RegistrationFormBoschEven,
-            "registration": "challenges_bosch_even_registration.html"
+            "registration": "challenges_bosch_even_registration.html",
+            "registration_confirmation": "challenges_registration_successful.html"
         }
     },
 }
@@ -161,7 +165,8 @@ def challenges_register(company, month, code):
     if request.method == 'POST':
         if form.validate():
             if challenges_registration.main(company, month, code, form):
-                return render_template('challenges_registration_successful.html', page_title=page_title)
+                return render_template(CHALLENGES_REGISTRATION[company][month]['registration_confirmation'],
+                                       page_title=page_title)
             else:
                 return render_template('failed.html', page_title=page_title)
 
