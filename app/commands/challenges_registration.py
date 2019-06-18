@@ -63,8 +63,9 @@ class ChallengesRegistration:
     @staticmethod
     def cadence90_odd_payment(athlete_details, access_info, form):
         payment_approval_message = payment_approval_callback_data = None
-        if not athlete_details or 'payment' not in athlete_details['odd_challenges'] or not \
-        athlete_details['odd_challenges']['payment']:
+        if not athlete_details or not athlete_details['odd_challenges'] or 'payment' not in athlete_details[
+            'odd_challenges'] or not \
+                athlete_details['odd_challenges']['payment']:
             payment_approval_message = "{name} ({athlete_id}) registered for Cadence90 odd month challenge.\n\nUTR: {utr}\nPhone: {phone}\nEmail ID: {email}\n\nApprove payment?"
             payment_approval_callback_data = "pa_challenges_cadence90_odd_{athlete_id}"
 
