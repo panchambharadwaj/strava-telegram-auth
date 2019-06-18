@@ -56,7 +56,7 @@ class ChallengesRegistration:
         email = form.email.data
         phone = form.phone.data
         payment = False
-        if athlete_details and 'payment' in athlete_details['odd_challenges']:
+        if athlete_details and athlete_details['odd_challenges'] and 'payment' in athlete_details['odd_challenges']:
             payment = athlete_details['odd_challenges']['payment']
         return {'utr': utr, 'phone': phone, 'email': email, 'payment': payment}
 
