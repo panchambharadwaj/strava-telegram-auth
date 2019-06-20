@@ -85,10 +85,19 @@ class ChallengesRegistration:
     def cadence90_even_payment(self, athlete_details, challenge_details):
         pass
 
-    def bosch_odd_challenge_ids(self):
-        pass
+    @staticmethod
+    def bosch_odd_challenge_ids(athlete_details, form):
+        challenge_ids = list()
+        challenge_ids.append(form.challenge_one.data)
+        challenge_ids.append(form.challenge_two.data)
+        ntid = form.ntid.data
+        email = form.email.data
+        phone = form.phone.data
+        location = form.location.data
+        return {'id': challenge_ids, 'location': location, 'ntid': ntid, 'email': email, 'phone': phone}
 
-    def bosch_odd_payment(self, athlete_details, challenge_details):
+    @staticmethod
+    def bosch_odd_payment(athlete_details, challenge_details):
         pass
 
     @staticmethod
