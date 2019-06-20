@@ -10,7 +10,8 @@ from app.commands.bot_registration import BotRegistration
 from app.commands.challenges_registration import ChallengesRegistration
 from app.common.constants_and_variables import AppVariables
 from app.common.execution_time import execution_time
-from app.common.forms import RegistrationBot, RegistrationFormBoschEven, RegistrationFormCadence90Odd
+from app.common.forms import RegistrationBot, RegistrationFormBoschEven, RegistrationFormCadence90Odd, \
+    RegistrationFormBoschOdd
 from app.resources.strava_telegram_webhooks import StravaTelegramWebhooksResource
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -51,7 +52,7 @@ CHALLENGES_REGISTRATION = {
     "bosch": {
         "odd": {
             "page_title": app_variables.challenges_bosch_odd_page_title,
-            "form": "",
+            "form": RegistrationFormBoschOdd,
             "registration": "challenges_bosch_odd_registration.html",
             "registration_confirmation": "challenges_registration_successful.html"
         },
