@@ -26,7 +26,7 @@ class RegistrationFormBoschOdd(Form):
                            choices=[("", "---"), ('EC', 'EC'), ('KOR', 'KOR'), ('BMH', 'BMH'), ('GTP', 'GTP'),
                                     ('Audugodi', 'Audugodi'),
                                     ('MRH', 'MRH'), ('Bellandur', 'Bellandur'), ('COB', 'COB'), ('Hyd', 'Hyd'),
-                                    ('Others', 'Others')])
+                                    ('OM', 'OM'), ('Others', 'Others')])
 
 
 class RegistrationFormBoschEven(Form):
