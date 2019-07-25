@@ -13,6 +13,12 @@ class RegistrationFormCadence90Odd(Form):
     email = EmailField('Email ID:', validators=[validators.DataRequired(), validators.Email()])
 
 
+class RegistrationFormCadence90Even(Form):
+    utr = StringField('UTR / Bank Reference No.:', validators=[validators.DataRequired()])
+    phone = StringField('Phone Number:', validators=[validators.DataRequired(), Length(min=6, max=15)])
+    email = EmailField('Email ID:', validators=[validators.DataRequired(), validators.Email()])
+
+
 class RegistrationFormBoschOdd(Form):
     challenge_one = RadioField('Challenge 1:', validators=[validators.DataRequired()],
                                choices=[('c2w_rides', 'CycleToWork Rides'), ('c2w_distance', 'CycleToWork Distance')])
