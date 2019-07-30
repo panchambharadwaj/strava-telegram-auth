@@ -125,7 +125,9 @@ class ChallengesRegistration:
 
     @staticmethod
     def bosch_even_challenge_ids(athlete_details, form):
-        challenge_ids = form.challenge_two.data
+        challenge_ids = list()
+        challenge_ids.append(form.challenge_one.data)
+        challenge_ids.append(form.challenge_two.data)
         ntid = form.ntid.data
         email = form.email.data
         phone = form.phone.data
