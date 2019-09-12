@@ -47,6 +47,22 @@ class ChallengesRegistration:
                     'payment_approval': False,
                     'payment_approval_details': self.bosch_even_payment
                 }
+            },
+            'tok': {
+                'odd': {
+                    'challenge_ids': self.tok_odd_challenge_ids,
+                    'query_insert': self.app_constants.QUERY_CHALLENGES_TOK_ODD_INSERT_VALUES,
+                    'query_update': self.app_constants.QUERY_CHALLENGES_TOK_ODD_UPDATE_VALUES,
+                    'payment_approval': False,
+                    'payment_approval_details': self.tok_odd_payment
+                },
+                'even': {
+                    'challenge_ids': self.tok_even_challenge_ids,
+                    'query_insert': self.app_constants.QUERY_CHALLENGES_TOK_EVEN_INSERT_VALUES,
+                    'query_update': self.app_constants.QUERY_CHALLENGES_TOK_EVEN_UPDATE_VALUES,
+                    'payment_approval': False,
+                    'payment_approval_details': self.tok_even_payment
+                }
             }
         }
 
@@ -134,7 +150,26 @@ class ChallengesRegistration:
         location = form.location.data
         return {'id': challenge_ids, 'location': location, 'ntid': ntid, 'email': email, 'phone': phone}
 
-    def bosch_even_payment(self, athlete_details, challenge_details):
+    @staticmethod
+    def bosch_even_payment(athlete_details, challenge_details):
+        pass
+
+    @staticmethod
+    def tok_odd_challenge_ids(athlete_details, form):
+        email = form.email.data
+        phone = form.phone.data
+        return {"email": email, "phone": phone}
+
+    @staticmethod
+    def tok_odd_payment(athlete_details, challenge_details):
+        pass
+
+    @staticmethod
+    def tok_even_challenge_ids(athlete_details, form):
+        return {'register': True}
+
+    @staticmethod
+    def tok_even_payment(athlete_details, challenge_details):
         pass
 
     def send_registration_for_payment_approval(self, company, month, athlete_details, access_info, form):

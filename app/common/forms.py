@@ -49,3 +49,12 @@ class RegistrationFormBoschEven(Form):
                                     ('Audugodi', 'Audugodi'),
                                     ('MRH', 'MRH'), ('Bellandur', 'Bellandur'), ('COB', 'COB'), ('Hyd', 'Hyd'),
                                     ('OM', 'OM'), ('Others', 'Others')])
+
+
+class RegistrationFormTokOdd(Form):
+    phone = StringField('Phone Number:', validators=[validators.DataRequired(), Length(min=6, max=15)])
+    email = EmailField('Email ID:', validators=[validators.DataRequired(), validators.Email()])
+
+
+class RegistrationFormTokEven(Form):
+    pass
