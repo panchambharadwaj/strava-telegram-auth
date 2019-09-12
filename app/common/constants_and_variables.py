@@ -56,6 +56,26 @@ class AppConstants:
                                                "refresh_token='{refresh_token}', expires_at={expires_at}, " \
                                                "bosch_odd_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
 
+    QUERY_CHALLENGES_TOK_ODD_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, access_token, " \
+                                             "refresh_token, expires_at, tok_odd_challenges, created) " \
+                                             "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
+                                             "{expires_at}, '{challenge_ids}', current_timestamp)"
+
+    QUERY_CHALLENGES_TOK_ODD_UPDATE_VALUES = "UPDATE strava_challenges " \
+                                             "SET name='{name}', access_token='{access_token}', " \
+                                             "refresh_token='{refresh_token}', expires_at={expires_at}, " \
+                                             "tok_odd_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
+
+    QUERY_CHALLENGES_TOK_EVEN_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, access_token, " \
+                                              "refresh_token, expires_at, tok_even_challenges, created) " \
+                                              "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
+                                              "{expires_at}, '{challenge_ids}', current_timestamp)"
+
+    QUERY_CHALLENGES_TOK_EVEN_UPDATE_VALUES = "UPDATE strava_challenges " \
+                                              "SET name='{name}', access_token='{access_token}', " \
+                                              "refresh_token='{refresh_token}', expires_at={expires_at}, " \
+                                              "tok_even_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
+
     API_TOKEN_EXCHANGE = "{host}/token/exchange/{category}/{code}"
     API_ATHLETE_EXISTS = "{host}/athlete/exists/{athlete_id}"
     API_UPDATE_STATS = "{host}/stats/bot/{athlete_id}"
@@ -85,6 +105,8 @@ class AppVariables:
     challenges_odd_page_title = os.environ.get('CHALLENGES_ODD_PAGE_TITLE')
     challenges_bosch_even_page_title = os.environ.get('CHALLENGES_BOSCH_EVEN_PAGE_TITLE')
     challenges_bosch_odd_page_title = os.environ.get('CHALLENGES_BOSCH_ODD_PAGE_TITLE')
+    challenges_tok_even_page_title = os.environ.get('CHALLENGES_TOK_EVEN_PAGE_TITLE')
+    challenges_tok_odd_page_title = os.environ.get('CHALLENGES_TOK_ODD_PAGE_TITLE')
     secret_key = os.environ.get('SECRET_KEY')
     app_port = os.environ.get('APP_PORT')
     app_debug = os.environ.get('APP_DEBUG')

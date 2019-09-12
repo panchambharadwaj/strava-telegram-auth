@@ -11,7 +11,7 @@ from app.commands.challenges_registration import ChallengesRegistration
 from app.common.constants_and_variables import AppVariables
 from app.common.execution_time import execution_time
 from app.common.forms import RegistrationBot, RegistrationFormBoschEven, RegistrationFormCadence90Odd, \
-    RegistrationFormBoschOdd, RegistrationFormCadence90Even
+    RegistrationFormBoschOdd, RegistrationFormCadence90Even, RegistrationFormTokOdd, RegistrationFormTokEven
 from app.resources.strava_telegram_webhooks import StravaTelegramWebhooksResource
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -63,6 +63,20 @@ CHALLENGES_REGISTRATION = {
             "registration_confirmation": "challenges_registration_successful.html"
         }
     },
+    "tok": {
+        "odd": {
+            "page_title": app_variables.challenges_tok_odd_page_title,
+            "form": RegistrationFormTokOdd,
+            "registration": "challenges_tok_odd_registration.html",
+            "registration_confirmation": "challenges_tok_odd_registration_successful.html"
+        },
+        "even": {
+            "page_title": app_variables.challenges_tok_even_page_title,
+            "form": RegistrationFormTokEven,
+            "registration": "challenges_tok_even_registration.html",
+            "registration_confirmation": "challenges_tok_even_registration_successful.html"
+        }
+    }
 }
 
 
