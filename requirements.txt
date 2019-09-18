@@ -3,6 +3,6 @@ requests==2.22.0
 psycopg2-binary==2.8.3
 gunicorn==19.9.0
 Flask==1.1.1
-scout-apm==2.4.0
-pycryptodome==3.8.2
+scout-apm==2.5.0
+pycryptodome==3.9.0
 ujson==1.35
