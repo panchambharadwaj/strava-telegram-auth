@@ -42,7 +42,7 @@ class RegistrationFormBoschEven(Form):
                                choices=[('2x30', '2km x 30 (only for Women riders)'), ('40x30', '40min x 30rides'),
                                         ('distance', 'How far can you go')])
     ntid = StringField('NTID:', validators=[validators.DataRequired()])
-    email = StringField('Official Email ID:', validators=[validators.DataRequired(), validators.Email()])
+    email = StringField('Official Email ID:', validators=[validators.DataRequired()])
     phone = StringField('Phone Number:', validators=[validators.DataRequired(), Length(min=6, max=15)])
     location = SelectField('Location:', validators=[validators.DataRequired()],
                            choices=[("", "---"), ('EC', 'EC'), ('KOR', 'KOR'), ('BMH', 'BMH'), ('GTP', 'GTP'),
