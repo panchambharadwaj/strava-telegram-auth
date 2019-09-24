@@ -23,7 +23,7 @@ class RegistrationFormBoschOdd(Form):
     challenge_one = RadioField('Challenge 1:', validators=[validators.DataRequired()],
                                choices=[('c2w_rides', 'CycleToWork Rides'), ('c2w_distance', 'CycleToWork Distance')])
     challenge_two = RadioField('Challenge 2:', validators=[validators.DataRequired()],
-                               choices=[('2x30', '2km x 30 (only for Woman riders)'), ('40x30', '40min x 30rides'),
+                               choices=[('2x30', '2km x 30 (only for Women riders)'), ('40x30', '40min x 30rides'),
                                         ('distance', 'How far can you go')])
     ntid = StringField('NTID:', validators=[validators.DataRequired()])
     email = StringField('Official Email ID:', validators=[validators.DataRequired(), validators.Email()])
@@ -39,7 +39,7 @@ class RegistrationFormBoschEven(Form):
     challenge_one = RadioField('Challenge 1:', validators=[validators.DataRequired()],
                                choices=[('c2w_rides', 'CycleToWork Rides'), ('c2w_distance', 'CycleToWork Distance')])
     challenge_two = RadioField('Challenge 2:', validators=[validators.DataRequired()],
-                               choices=[('2x30', '2km x 30 (only for Woman riders)'), ('40x30', '40min x 30rides'),
+                               choices=[('2x30', '2km x 30 (only for Women riders)'), ('40x30', '40min x 30rides'),
                                         ('distance', 'How far can you go')])
     ntid = StringField('NTID:', validators=[validators.DataRequired()])
     email = StringField('Official Email ID:', validators=[validators.DataRequired(), validators.Email()])
