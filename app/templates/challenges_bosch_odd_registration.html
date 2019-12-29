@@ -17,72 +17,36 @@
     <div class="row align-items-center justify-content-center">
         <div class="col-md-4">
             <form action="" method="post" role="form">
-                <h4> Challenge 1: </h4>
-                <p>
-                <h6>1a. CycleToWork (No. of Rides) </h6>
+                <h6> Base Points: </h6>
                 <small>
-                    - Needs registration at <a href="http://cycleto.work"> cycleto.work </a> <br>
-                    - Rides have to be to the location registered on CycleToWork. <br>
-                    - Starting Bonus of 50 points each for the first 2 CycleToWork days (max points 100). <br>
-                    - Contribute your commutes to work for the #CycleToWork initiative by commuting 25 times to/from
-                    work. <br>
-                    - Accumulate 20 points for each CycleToWork rides (limited to a max of 500 points). <br>
-                    - Additional Bonus of 100 points if you have more than 15 CycleToWork days in July. <br>
+                    10 km = 2 points <br>
+                    100 meters = 1 point (Elevation gain) <br>
+                    1 activity = 2 points (Minimum 10 kms) <br><br>
                 </small>
-                </p>
-                <p>
-                <h6>1b. CycleToWork (Distance Covered) </h6>
+                <h6> Bonus Points: </h6>
                 <small>
-                    - Needs registration at <a href="http://cycleto.work"> cycleto.work </a> <br>
-                    - Rides have to be to the location registered on CycleToWork. <br>
-                    - Starting Bonus of 50 points each for the first 2 CycleToWork days (max points 100). <br>
-                    - Contribute your commutes to work for the #CycleToWork initiative by commuting 500km to/from work.
-                    <br>
-                    - Accumulate 1 point for each CycleToWork rides by 1km (limited to a max of 500 points). <br>
-                    - Additional Bonus of 100 points if you reach 500 points first in this challenge. <br>
+                    C2W Activity = 5 points (only 1 per day) <br>
+                    25 km in a single ride = 5 points <br>
+                    50 km in a single ride = 15 points <br>
+                    100 km in a single ride = 15 points <br><br>
+                    500 meters of elevation gain in a single ride = 10 points <br>
+                    1000 meters of elevation gain in a single ride = 25 points <br><br>
+                    3 consecutive 50s = 25 points <br>
+                    5 consecutive 50s = 50 points <br>
+                    2 consecutive 100s = 50 points <br>
+                    3 consecutive 100s = 100 points <br><br>
                 </small>
-                </p>
-                <h4> Challenge 2: </h4>
-                <p>
-                <h6>2a. 2km x 30 (only for Woman riders) </h6>
+                <h6> Conditions: </h6>
                 <small>
-                    - Do 30 rides of 2km each ride in the month of July 2019. <br>
-                    - It has to be single ride on Strava. <br>
-                    - Multiple rides adding up to 2km will not be counted. <br>
-                    - Multiple rides (of 2km or more) in a day are welcome and counted. <br>
-                    - Starting Bonus of 50 points each for the first 2 CycleToWork rides(max points 100). <br>
-                    - Accumulate 15 points for each counted ride(limited to first 30 rides. Max of 450 points). <br>
-                    - Additional Bonus of 50 points for completing the challenge(30 counted rides). <br>
-                    - Additional Bonus of 100 points for completing the challenge(35 counted rides). <br>
-                </small>
-                </p>
-                <p>
-                <h6>2b: 40min x 30rides </h6>
-                <small>
-                    - Do 30 rides of 40 minutes each ride in the month of July 2019. <br>
-                    - It has to be a single ride on Strava. <br>
-                    - Multiple rides adding up to 40 minutes will not be counted. <br>
-                    - Multiple rides (of 40 minutes or more) in a day are welcome and counted. <br>
-                    - Accumulate 20 points for each counted ride (limited to max of 600 points). <br>
-                    - Bonus of 50 points for completing the challenge(30 counted rides). <br>
-                    - Additional Bonus of 50 points for doing a 50+ km ride in July (Single ride). <br>
-                </small>
-                </p>
-                <p>
-                <h6>2c: How far can you go </h6>
-                <small>
-                    - Ride as much as you want/can in July. <br>
-                    - Multiple rides per day are welcome, however, do take the time to get off the saddle once in a
-                    while. <br>
-                    - Accumulate 1 points for every 1 km ridden (max 600 points). <br>
-                    - Additional Bonus of 50 points for doing a 150+ km ride in July (Single ride). <br>
-                    - Bonus of 50 points for completing 1000 km in July. <br>
+                    A cap of 100 kms (single ride) is set for base points in Cycling. For eg. If a rider does a 150 km
+                    ride, he/she gets 20 base points only along with applicable bonus points. <br>
+                    Similarly, a cap of 2000 meters(single ride) of elevation gain is set for base points in Cycling.
+                    For eg. If a rider does a ride with 2500 meters of elevation gain, he/she gets 20 base points along
+                    with applicable bonus points. <br><br>
                 </small>
                 </p>
                 {% from "_helper_challenges_registration.html" import render_field %}
                 <dl>
-                    {{ render_field(form.challenge_one) }}
-                    {{ render_field(form.challenge_two) }}
                     {{ render_field(form.ntid) }}
                     {{ render_field(form.email) }}
                     {{ render_field(form.phone) }}

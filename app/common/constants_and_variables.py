@@ -16,63 +16,63 @@ class AppConstants:
                           "telegram_username='{telegram_username}', active=true, updated=now()" \
                           "where athlete_id={athlete_id}"
 
-    QUERY_CHALLENGES_EVEN_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, access_token, " \
+    QUERY_CHALLENGES_EVEN_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, gender, access_token, " \
                                           "refresh_token, expires_at, even_challenges, created) " \
-                                          "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
+                                          "VALUES ({athlete_id}, '{name}', '{gender}', '{access_token}', '{refresh_token}', " \
                                           "{expires_at}, '{challenge_ids}', current_timestamp)"
 
-    QUERY_CHALLENGES_BOSCH_EVEN_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, access_token, " \
+    QUERY_CHALLENGES_BOSCH_EVEN_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, gender, access_token, " \
                                                 "refresh_token, expires_at, bosch_even_challenges, created) " \
-                                                "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
+                                                "VALUES ({athlete_id}, '{name}', '{gender}', '{access_token}', '{refresh_token}', " \
                                                 "{expires_at}, '{challenge_ids}', current_timestamp)"
 
     QUERY_CHALLENGES_EVEN_UPDATE_VALUES = "UPDATE strava_challenges " \
-                                          "SET name='{name}', access_token='{access_token}', " \
+                                          "SET name='{name}', gender='{gender}', access_token='{access_token}', " \
                                           "refresh_token='{refresh_token}', expires_at={expires_at}, " \
                                           "even_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
 
     QUERY_CHALLENGES_BOSCH_EVEN_UPDATE_VALUES = "UPDATE strava_challenges " \
-                                                "SET name='{name}', access_token='{access_token}', " \
+                                                "SET name='{name}', gender='{gender}', access_token='{access_token}', " \
                                                 "refresh_token='{refresh_token}', expires_at={expires_at}, " \
                                                 "bosch_even_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
 
-    QUERY_CHALLENGES_ODD_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, access_token, " \
+    QUERY_CHALLENGES_ODD_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, gender, access_token, " \
                                          "refresh_token, expires_at, odd_challenges, created) " \
-                                         "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
+                                         "VALUES ({athlete_id}, '{name}', '{gender}', '{access_token}', '{refresh_token}', " \
                                          "{expires_at}, '{challenge_ids}', current_timestamp)"
 
-    QUERY_CHALLENGES_BOSCH_ODD_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, access_token, " \
+    QUERY_CHALLENGES_BOSCH_ODD_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, gender, access_token, " \
                                                "refresh_token, expires_at, bosch_odd_challenges, created) " \
-                                               "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
+                                               "VALUES ({athlete_id}, '{name}', '{gender}', '{access_token}', '{refresh_token}', " \
                                                "{expires_at}, '{challenge_ids}', current_timestamp)"
 
     QUERY_CHALLENGES_ODD_UPDATE_VALUES = "UPDATE strava_challenges " \
-                                         "SET name='{name}', access_token='{access_token}', " \
+                                         "SET name='{name}', gender='{gender}', access_token='{access_token}', " \
                                          "refresh_token='{refresh_token}', expires_at={expires_at}, " \
                                          "odd_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
 
     QUERY_CHALLENGES_BOSCH_ODD_UPDATE_VALUES = "UPDATE strava_challenges " \
-                                               "SET name='{name}', access_token='{access_token}', " \
+                                               "SET name='{name}', gender='{gender}', access_token='{access_token}', " \
                                                "refresh_token='{refresh_token}', expires_at={expires_at}, " \
                                                "bosch_odd_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
 
-    QUERY_CHALLENGES_TOK_ODD_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, access_token, " \
+    QUERY_CHALLENGES_TOK_ODD_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, gender, access_token, " \
                                              "refresh_token, expires_at, tok_odd_challenges, created) " \
-                                             "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
+                                             "VALUES ({athlete_id}, '{name}', '{gender}', '{access_token}', '{refresh_token}', " \
                                              "{expires_at}, '{challenge_ids}', current_timestamp)"
 
     QUERY_CHALLENGES_TOK_ODD_UPDATE_VALUES = "UPDATE strava_challenges " \
-                                             "SET name='{name}', access_token='{access_token}', " \
+                                             "SET name='{name}', gender='{gender}', access_token='{access_token}', " \
                                              "refresh_token='{refresh_token}', expires_at={expires_at}, " \
                                              "tok_odd_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
 
-    QUERY_CHALLENGES_TOK_EVEN_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, access_token, " \
+    QUERY_CHALLENGES_TOK_EVEN_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, gender, access_token, " \
                                               "refresh_token, expires_at, tok_even_challenges, created) " \
-                                              "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
+                                              "VALUES ({athlete_id}, '{name}', '{gender}', '{access_token}', '{refresh_token}', " \
                                               "{expires_at}, '{challenge_ids}', current_timestamp)"
 
     QUERY_CHALLENGES_TOK_EVEN_UPDATE_VALUES = "UPDATE strava_challenges " \
-                                              "SET name='{name}', access_token='{access_token}', " \
+                                              "SET name='{name}', gender='{gender}', access_token='{access_token}', " \
                                               "refresh_token='{refresh_token}', expires_at={expires_at}, " \
                                               "tok_even_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
 
