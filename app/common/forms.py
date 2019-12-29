@@ -20,11 +20,11 @@ class RegistrationFormCadence90Even(Form):
 
 
 class RegistrationFormBoschOdd(Form):
-    challenge_one = RadioField('Challenge 1:', validators=[validators.DataRequired()],
-                               choices=[('c2w_rides', 'CycleToWork Rides'), ('c2w_distance', 'CycleToWork Distance')])
-    challenge_two = RadioField('Challenge 2:', validators=[validators.DataRequired()],
-                               choices=[('2x30', '2km x 30 (only for Women riders)'), ('40x30', '40min x 30rides'),
-                                        ('distance', 'How far can you go')])
+    # challenge_one = RadioField('Challenge 1:', validators=[validators.DataRequired()],
+    #                            choices=[('c2w_rides', 'CycleToWork Rides'), ('c2w_distance', 'CycleToWork Distance')])
+    # challenge_two = RadioField('Challenge 2:', validators=[validators.DataRequired()],
+    #                            choices=[('2x30', '2km x 30 (only for Women riders)'), ('40x30', '40min x 30rides'),
+    #                                     ('distance', 'How far can you go')])
     ntid = StringField('NTID:', validators=[validators.DataRequired()])
     email = StringField('Official Email ID:', validators=[validators.DataRequired(), validators.Email()])
     phone = StringField('Phone Number:', validators=[validators.DataRequired(), Length(min=6, max=15)])
@@ -32,7 +32,7 @@ class RegistrationFormBoschOdd(Form):
                            choices=[("", "---"), ('EC', 'EC'), ('KOR', 'KOR'), ('BMH', 'BMH'), ('GTP', 'GTP'),
                                     ('Audugodi', 'Audugodi'),
                                     ('MRH', 'MRH'), ('Bellandur', 'Bellandur'), ('COB', 'COB'), ('Hyd', 'Hyd'),
-                                    ('OM', 'OM'), ('Others', 'Others')])
+                                    ('OM', 'OM')])
 
 
 class RegistrationFormBoschEven(Form):
