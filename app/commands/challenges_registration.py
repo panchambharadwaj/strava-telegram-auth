@@ -126,14 +126,11 @@ class ChallengesRegistration:
 
     @staticmethod
     def bosch_odd_challenge_ids(athlete_details, form):
-        challenge_ids = list()
-        challenge_ids.append(form.challenge_one.data)
-        challenge_ids.append(form.challenge_two.data)
         ntid = form.ntid.data
         email = form.email.data
         phone = form.phone.data
         location = form.location.data
-        return {'id': challenge_ids, 'location': location, 'ntid': ntid, 'email': email, 'phone': phone}
+        return {'location': location, 'ntid': ntid, 'email': email, 'phone': phone}
 
     @staticmethod
     def bosch_odd_payment(athlete_details, challenge_details):
@@ -191,6 +188,7 @@ class ChallengesRegistration:
             challenge_ids = ujson.dumps(self.challenges_config[company][month]['challenge_ids'](athlete_details, form))
             if self.strava_telegram_webhooks.database_write(
                     query.format(athlete_id=access_info['athlete_id'], name=access_info['name'],
+                                 gender=access_info['gender'],
                                  access_token=self.aes_cipher.encrypt(access_info['access_token']),
                                  refresh_token=self.aes_cipher.encrypt(access_info['refresh_token']),
                                  expires_at=access_info['expires_at'], challenge_ids=challenge_ids)):
