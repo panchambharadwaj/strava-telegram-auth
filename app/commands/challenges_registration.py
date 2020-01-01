@@ -21,7 +21,7 @@ class ChallengesRegistration:
                     'challenge_ids': self.cadence90_odd_challenge_ids,
                     'query_insert': self.app_constants.QUERY_CHALLENGES_ODD_INSERT_VALUES,
                     'query_update': self.app_constants.QUERY_CHALLENGES_ODD_UPDATE_VALUES,
-                    'payment_approval': True,
+                    'payment_approval': False,
                     'payment_approval_details': self.cadence90_odd_payment
                 },
                 'even': {
@@ -68,32 +68,14 @@ class ChallengesRegistration:
 
     @staticmethod
     def cadence90_odd_challenge_ids(athlete_details, form):
-        utr = form.utr.data
         email = form.email.data
         phone = form.phone.data
-        payment = False
-        if athlete_details and athlete_details['odd_challenges'] and 'payment' in athlete_details['odd_challenges']:
-            payment = athlete_details['odd_challenges']['payment']
-        return {'utr': utr, 'phone': phone, 'email': email, 'payment': payment}
+        address = form.address.data
+        return {'phone': phone, 'email': email, 'address': address}
 
     @staticmethod
     def cadence90_odd_payment(athlete_details, access_info, form):
-        payment_approval_message = payment_approval_callback_data = None
-        if not athlete_details or not athlete_details['odd_challenges'] or 'payment' not in athlete_details[
-            'odd_challenges'] or not \
-                athlete_details['odd_challenges']['payment']:
-            payment_approval_message = "{name} ({athlete_id}) registered for Cadence90 odd month challenge.\n\nUTR: {utr}\nPhone: {phone}\nEmail ID: {email}\n\nApprove payment?"
-            payment_approval_callback_data = "pa_challenges_cadence90_odd_{athlete_id}"
-
-            payment_approval_message = payment_approval_message.format(name=access_info['name'],
-                                                                       athlete_id=access_info['athlete_id'],
-                                                                       utr=form.utr.data,
-                                                                       phone=form.phone.data,
-                                                                       email=form.email.data)
-
-            payment_approval_callback_data = payment_approval_callback_data.format(athlete_id=access_info['athlete_id'])
-
-        return payment_approval_message, payment_approval_callback_data
+        pass
 
     @staticmethod
     def cadence90_even_challenge_ids(athlete_details, form):
