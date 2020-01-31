@@ -10,7 +10,6 @@
     <br>
     <center>
         <h2>{{ page_title }}</h2>
-        <h6>Powered by Flat Tummies</h6>
     </center>
 </div>
 <div class=container" style="margin-right: 10px; margin-left: 15px; margin-top: 5px; margin-bottom: 5px;">
@@ -18,12 +17,75 @@
     <div class="row align-items-center justify-content-center">
         <div class="col-md-4">
             <form action="" method="post" role="form">
+                <h6> Base points: </h6>
+                <small>
+                    10 km = 1 point <br>
+                    100 meters = 1 point (Elevation gain) <br>
+                    1 activity = 1 point (Minimum 30 mins or 10 kms) <br><br>
+                </small>
+                <h6> Conditions: </h6>
+                <small>
+                    A cap of 100 kms(single ride) is set for base points. For eg. If a rider does a 150 km ride, he gets
+                    10 base points along with applicable bonus points. <br>
+                    Similarly, a cap of 1500 meters(single ride) of elevation gain is set for base points. For eg. If a
+                    rider does a ride with 2000 meters of elevation gain, he gets 15 points along with applicable bonus
+                    points. <br><br>
+                </small>
+                <h6> Bonus points: </h6>
+                <small>
+                    20 km in a single ride = 5 points <br>
+                    20 km for 5 successive days = 75 points <br>
+                    20 km for 20 days in a month = 150 points <br>
+                    20 km on all days of the month = 250 points <br><br>
+                    50 km in a single ride on a weekend = 10 points <br>
+                    50 km in a single ride on a weekday = 15 points <br>
+                    50 km for 5 successive days = 100 points* <br>
+                    50 km rides for 10 days in a month = 100 points** <br><br>
+                    100 km in a single ride on a weekend = 20 points <br>
+                    100 km in a single ride on a weekday = 30 points <br>
+                    100 km for 3 successive days = 100 points <br>
+                    100 km rides for 10 days in a month = 200 <br><br>
+                    500 meters of elevation gain in a single ride = 10 points <br>
+                    1000 meters of elevation gain in a single ride = 25 points <br>
+                    10000 meters of elevation gain in a month = 150 points <br><br>
+                    1000 kms in a month = 150 points <br><br>
+                    <b>Rides on first and last day of the month will fetch you 2x points.</b><br><br>
+                    <i>*If a rider does 5 successive 50 km plus rides which has 3 successive 100 km rides, he gets the
+                        bonus points for 3 successive 100 km rides and not for 5 successive 50 km rides.<br>
+                        **Only rides between 50 km and 99.99 km are considered for this.</i><br><br>
+                    A single leader board will be published considering all the above parameters.<br><br>
+                    Every rider who reaches 600 points will get an e-certificate.<br><br>
+                    <b>Top 3 finishers will receive Rs 2000 worth vouchers from Cadence90 which can be redeemed for any
+                        purchase/service/tours at Cadence90.</b><br><br>
+                    <i>1. Rs 2500
+                        2. Rs 1500
+                        3. Rs 1000</i><br><br>
+                </small>
+                <h6>Registration Info:</h6>
+                <small>
+                    <b>Fee: Rs. 100 </b><br><br>
+                    <b>Bank Details:</b><br>
+                    Account Name : Cadence90 Cycling And Tours LLP <br>
+                    Account Number : 1011913488 <br>
+                    IFSC Code : KKBK0000421 <br>
+                    Account Type : Current Account <br>
+                    Bank : Kotak Mahindra Bank <br><br>
+                    <b>UPI Details:</b> <br>
+                    VPA: cadence.90@ybl <br>
+                    PhonePe / Google Pay: 9880038450 <br><br>
+                </small>
+                <small>
+                    <b>Note:</b>
+                    Once the amount is paid, enter the UTR / Bank Reference Number in the below field along with your
+                    phone number and email address
+                </small>
+                <br><br>
                 <center>
                     {% from "_helper_challenges_registration.html" import render_field %}
                     <dl>
+                        {{ render_field(form.utr) }}
                         {{ render_field(form.phone) }}
                         {{ render_field(form.email) }}
-                        {{ render_field(form.address) }}
                     </dl>
                     <button class="btn btn-success" type="submit">Submit</button>
                 </center>

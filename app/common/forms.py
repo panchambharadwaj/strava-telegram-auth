@@ -8,16 +8,16 @@ class RegistrationBot(Form):
 
 
 class RegistrationFormCadence90Odd(Form):
-    # utr = StringField('UTR / Bank Reference No.:', validators=[validators.DataRequired()])
+    utr = StringField('UTR / Bank Reference No.:', validators=[validators.DataRequired()])
     phone = StringField('Phone Number:', validators=[validators.DataRequired(), Length(min=6, max=15)])
     email = EmailField('Email ID:', validators=[validators.DataRequired(), validators.Email()])
     address = TextAreaField('Postal Address:', validators=[validators.DataRequired()])
 
 
 class RegistrationFormCadence90Even(Form):
-    utr = StringField('UTR / Bank Reference No.:', validators=[validators.DataRequired()])
     phone = StringField('Phone Number:', validators=[validators.DataRequired(), Length(min=6, max=15)])
     email = EmailField('Email ID:', validators=[validators.DataRequired(), validators.Email()])
+    address = TextAreaField('Postal Address:', validators=[validators.DataRequired()])
 
 
 class RegistrationFormBoschOdd(Form):
