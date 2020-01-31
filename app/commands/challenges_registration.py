@@ -28,7 +28,7 @@ class ChallengesRegistration:
                     'challenge_ids': self.cadence90_even_challenge_ids,
                     'query_insert': self.app_constants.QUERY_CHALLENGES_EVEN_INSERT_VALUES,
                     'query_update': self.app_constants.QUERY_CHALLENGES_EVEN_UPDATE_VALUES,
-                    'payment_approval': True,
+                    'payment_approval': False,
                     'payment_approval_details': self.cadence90_even_payment
                 }
             },
@@ -68,17 +68,6 @@ class ChallengesRegistration:
 
     @staticmethod
     def cadence90_odd_challenge_ids(athlete_details, form):
-        email = form.email.data
-        phone = form.phone.data
-        address = form.address.data
-        return {'phone': phone, 'email': email, 'address': address}
-
-    @staticmethod
-    def cadence90_odd_payment(athlete_details, access_info, form):
-        pass
-
-    @staticmethod
-    def cadence90_even_challenge_ids(athlete_details, form):
         utr = form.utr.data
         email = form.email.data
         phone = form.phone.data
@@ -88,7 +77,7 @@ class ChallengesRegistration:
         return {'utr': utr, 'phone': phone, 'email': email, 'payment': payment}
 
     @staticmethod
-    def cadence90_even_payment(athlete_details, access_info, form):
+    def cadence90_odd_payment(athlete_details, access_info, form):
         payment_approval_message = payment_approval_callback_data = None
         if not athlete_details or not athlete_details['even_challenges'] or 'payment' not in athlete_details[
             'even_challenges'] or not \
@@ -105,6 +94,17 @@ class ChallengesRegistration:
             payment_approval_callback_data = payment_approval_callback_data.format(athlete_id=access_info['athlete_id'])
 
         return payment_approval_message, payment_approval_callback_data
+
+    @staticmethod
+    def cadence90_even_challenge_ids(athlete_details, form):
+        email = form.email.data
+        phone = form.phone.data
+        address = form.address.data
+        return {'phone': phone, 'email': email, 'address': address}
+
+    @staticmethod
+    def cadence90_even_payment(athlete_details, access_info, form):
+        pass
 
     @staticmethod
     def bosch_odd_challenge_ids(athlete_details, form):
