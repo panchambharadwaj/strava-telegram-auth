@@ -16,6 +16,27 @@ class StravaTelegramWebhooksResource:
         self.app_constants = AppConstants()
         self.host = self.app_variables.api_host
 
+    def bot_registration(self, strava_code, telegram_username):
+        result = False
+        data = ujson.dumps(
+            {
+                "stravaCode": strava_code,
+                "telegramUsername": telegram_username
+            }
+        )
+        endpoint = self.app_constants.API_BOT_REGISTRATION.format(host=self.host)
+        try:
+            logging.info("Requesting Bot registration: %", telegram_username)
+            response = requests.post(endpoint, data=data, headers={"Content-Type": "application/json"})
+            logging.info("Response status code: %s", response.status_code)
+        except Exception:
+            logging.error(traceback.format_exc())
+        else:
+            if response.status_code == 200:
+                result = True
+
+        return result
+
     def token_exchange(self, category, code):
         result = {}
         endpoint = self.app_constants.API_TOKEN_EXCHANGE.format(host=self.host, category=category, code=code)
@@ -110,7 +131,7 @@ class StravaTelegramWebhooksResource:
     def send_message(self, message):
         result = False
         endpoint = self.app_constants.API_SEND_MESSAGE.format(host=self.host)
-        data = ujson.dumps({"message": message})
+        data = ujson.dumps({"text": message})
         try:
             logging.info("Requesting to send Telegram message..")
             response = requests.post(endpoint, data=data, headers={"Content-Type": "application/json"})
@@ -118,7 +139,7 @@ class StravaTelegramWebhooksResource:
         except Exception:
             logging.error(traceback.format_exc())
         else:
-            if response.status_code == 200:
+            if response.status_code == 202:
                 result = True
 
         return result

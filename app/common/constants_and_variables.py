@@ -76,11 +76,13 @@ class AppConstants:
                                               "refresh_token='{refresh_token}', expires_at={expires_at}, " \
                                               "tok_even_challenges='{challenge_ids}', updated=now() where athlete_id={athlete_id}"
 
+    API_BOT_REGISTRATION = "{host}/v1/bot/athletes"
+    API_SEND_MESSAGE = "{host}/v1/telegram/message"
     API_TOKEN_EXCHANGE = "{host}/token/exchange/{category}/{code}"
     API_ATHLETE_EXISTS = "{host}/athlete/exists/{athlete_id}"
     API_UPDATE_STATS = "{host}/stats/bot/{athlete_id}"
     API_DATABASE_WRITE = "{host}/database/write"
-    API_SEND_MESSAGE = "{host}/telegram/send_message"
+    # API_SEND_MESSAGE = "{host}/telegram/send_message"
     API_SEND_APPROVAL_MESSAGE = "{host}/telegram/payment_approval"
     API_ATHLETE_DETAILS_IN_CHALLENGES = "{host}/challenges/athlete/{athlete_id}"
     API_ATHLETE_CALCULATE_CHALLENGES = "{host}/stats/challenges/{athlete_id}"
