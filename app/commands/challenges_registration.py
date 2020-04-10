@@ -99,8 +99,7 @@ class ChallengesRegistration:
     def cadence90_even_challenge_ids(athlete_details, form):
         email = form.email.data
         phone = form.phone.data
-        address = form.address.data
-        return {'phone': phone, 'email': email, 'address': address}
+        return {'phone': phone, 'email': email}
 
     @staticmethod
     def cadence90_even_payment(athlete_details, access_info, form):
