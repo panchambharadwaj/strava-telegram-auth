@@ -6,7 +6,6 @@ import traceback
 from flask import Flask, request, redirect, render_template, url_for, flash
 from scout_apm.flask import ScoutApm
 
-from app.commands.bot_registration import BotRegistration
 from app.commands.challenges_registration import ChallengesRegistration
 from app.common.constants_and_variables import AppVariables
 from app.common.execution_time import execution_time
@@ -20,7 +19,6 @@ logger = logging.getLogger(__name__)
 
 app_variables = AppVariables()
 strava_telegram_webhooks = StravaTelegramWebhooksResource()
-bot_registration = BotRegistration()
 challenges_registration = ChallengesRegistration()
 
 app = Flask(__name__)

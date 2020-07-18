@@ -5,17 +5,6 @@ import os
 
 class AppConstants:
 
-    QUERY_INSERT_VALUES = "INSERT INTO strava_telegram_bot (athlete_id, name, access_token, refresh_token, " \
-                          "expires_at, telegram_username, active, created) " \
-                          "VALUES ({athlete_id}, '{name}', '{access_token}', '{refresh_token}', " \
-                          "{expires_at}, '{telegram_username}', true, current_timestamp)"
-
-    QUERY_UPDATE_VALUES = "UPDATE strava_telegram_bot " \
-                          "SET name='{name}', access_token='{access_token}', " \
-                          "refresh_token='{refresh_token}', expires_at={expires_at}, " \
-                          "telegram_username='{telegram_username}', active=true, updated=now()" \
-                          "where athlete_id={athlete_id}"
-
     QUERY_CHALLENGES_EVEN_INSERT_VALUES = "INSERT INTO strava_challenges (athlete_id, name, gender, access_token, " \
                                           "refresh_token, expires_at, even_challenges, created) " \
                                           "VALUES ({athlete_id}, '{name}', '{gender}', '{access_token}', '{refresh_token}', " \
@@ -79,15 +68,12 @@ class AppConstants:
     API_BOT_REGISTRATION = "{host}/v1/bot/athletes"
     API_SEND_MESSAGE = "{host}/v1/telegram/message"
     API_TOKEN_EXCHANGE = "{host}/token/exchange/{category}/{code}"
-    API_ATHLETE_EXISTS = "{host}/athlete/exists/{athlete_id}"
-    API_UPDATE_STATS = "{host}/stats/bot/{athlete_id}"
     API_DATABASE_WRITE = "{host}/database/write"
     # API_SEND_MESSAGE = "{host}/telegram/send_message"
     API_SEND_APPROVAL_MESSAGE = "{host}/telegram/payment_approval"
     API_ATHLETE_DETAILS_IN_CHALLENGES = "{host}/challenges/athlete/{athlete_id}"
     API_ATHLETE_CALCULATE_CHALLENGES = "{host}/stats/challenges/{athlete_id}"
 
-    MESSAGE_NEW_REGISTRATION = "{athlete_name} registered with Telegram username `{telegram_username}`"
     MESSAGE_NEW_CHALLENGES_REGISTRATION = "{athlete_name} registered for {company} {month} month challenge.\n\nData: {data}"
 
 
