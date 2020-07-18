@@ -26,7 +26,7 @@ class StravaTelegramWebhooksResource:
         )
         endpoint = self.app_constants.API_BOT_REGISTRATION.format(host=self.host)
         try:
-            logging.info("Requesting Bot registration: %", telegram_username)
+            logging.info("Requesting Bot registration: %s", telegram_username)
             response = requests.post(endpoint, data=data, headers={"Content-Type": "application/json"})
             logging.info("Response status code: %s", response.status_code)
         except Exception:
