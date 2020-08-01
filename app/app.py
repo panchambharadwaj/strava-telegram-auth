@@ -6,7 +6,6 @@ import traceback
 from flask import Flask, request, redirect, render_template, url_for, flash
 from scout_apm.flask import ScoutApm
 
-from app.commands.bot_registration import BotRegistration
 from app.commands.challenges_registration import ChallengesRegistration
 from app.common.constants_and_variables import AppVariables
 from app.common.execution_time import execution_time
@@ -20,7 +19,6 @@ logger = logging.getLogger(__name__)
 
 app_variables = AppVariables()
 strava_telegram_webhooks = StravaTelegramWebhooksResource()
-bot_registration = BotRegistration()
 challenges_registration = ChallengesRegistration()
 
 app = Flask(__name__)
@@ -122,7 +120,8 @@ def registration(code):
             telegram_username = request.form['telegram_username'].strip()
             if form.validate():
                 logging.info("Registering Telegram user: %s..", telegram_username)
-                if bot_registration.main(telegram_username, code, "bot"):
+                telegram_username = telegram_username[1:] if telegram_username.startswith('@') else telegram_username
+                if strava_telegram_webhooks.bot_registration(code, telegram_username):
                     return render_template('successful.html', page_title=app_variables.page_title,
                                            bot_url=app_variables.bot_url)
                 else:
@@ -135,58 +134,56 @@ def registration(code):
         return render_template('registration.html', form=form, page_title=app_variables.page_title)
 
     except Exception:
-        message = "Something went wrong. Exception: {exception}".format(exception=traceback.format_exc())
-        logging.error(message)
-        strava_telegram_webhooks.send_message(message)
+        logging.error("Something went wrong. Exception: {exception}".format(exception=traceback.format_exc()))
 
 
-@app.route("/register/challenges/<company>/<month>")
-def challenges_register_redirect(company, month):
-    logging.info("Register - Company: %s | Month: %s", company, month)
-    if company in CHALLENGES_REGISTRATION and month in CHALLENGES_REGISTRATION[company]:
-        redirect_uri = app_variables.challenges_redirect_uri.format(app_host=app_variables.app_host, company=company,
-                                                                    month=month)
-        strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
-                                                                          redirect_uri=redirect_uri,
-                                                                          scope=app_variables.strava_challenges_auth_scope)
-        return redirect(strava_auth_url, code=302)
+# @app.route("/register/challenges/<company>/<month>")
+# def challenges_register_redirect(company, month):
+#     logging.info("Register - Company: %s | Month: %s", company, month)
+#     if company in CHALLENGES_REGISTRATION and month in CHALLENGES_REGISTRATION[company]:
+#         redirect_uri = app_variables.challenges_redirect_uri.format(app_host=app_variables.app_host, company=company,
+#                                                                     month=month)
+#         strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
+#                                                                           redirect_uri=redirect_uri,
+#                                                                           scope=app_variables.strava_challenges_auth_scope)
+#         return redirect(strava_auth_url, code=302)
+#
+#
+# @app.route("/auth/challenges/<company>/<month>")
+# def challenges_auth(company, month):
+#     logging.info("Auth - Company: %s | Month: %s", company, month)
+#     code = request.args.get('code')
+#     permissions = request.args.get('scope')
+#     if permissions != app_variables.strava_challenges_auth_scope:
+#         page_title = CHALLENGES_REGISTRATION[company][month]['page_title']
+#         redirect_uri = app_variables.challenges_redirect_uri.format(app_host=app_variables.app_host, company=company,
+#                                                                     month=month)
+#         strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
+#                                                                           redirect_uri=redirect_uri,
+#                                                                           scope=app_variables.strava_challenges_auth_scope)
+#         strava_telegram_webhooks.send_message(
+#             "Insufficient permissions for {company} {month} challenge.".format(company=company, month=month))
+#         return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
+#     else:
+#         return redirect(url_for('challenges_register', company=company, month=month, code=code))
 
 
-@app.route("/auth/challenges/<company>/<month>")
-def challenges_auth(company, month):
-    logging.info("Auth - Company: %s | Month: %s", company, month)
-    code = request.args.get('code')
-    permissions = request.args.get('scope')
-    if permissions != app_variables.strava_challenges_auth_scope:
-        page_title = CHALLENGES_REGISTRATION[company][month]['page_title']
-        redirect_uri = app_variables.challenges_redirect_uri.format(app_host=app_variables.app_host, company=company,
-                                                                    month=month)
-        strava_auth_url = app_variables.strava_challenges_auth_url.format(client_id=app_variables.challenges_client_id,
-                                                                          redirect_uri=redirect_uri,
-                                                                          scope=app_variables.strava_challenges_auth_scope)
-        strava_telegram_webhooks.send_message(
-            "Insufficient permissions for {company} {month} challenge.".format(company=company, month=month))
-        return render_template('failed_permissions.html', page_title=page_title, auth_link=strava_auth_url)
-    else:
-        return redirect(url_for('challenges_register', company=company, month=month, code=code))
-
-
-@app.route("/registration/challenges/<company>/<month>/<code>", methods=['GET', 'POST'])
-@execution_time
-def challenges_register(company, month, code):
-    logging.info("Registration - Company: %s | Month: %s", company, month)
-    form = CHALLENGES_REGISTRATION[company][month]['form'](request.form)
-    page_title = CHALLENGES_REGISTRATION[company][month]['page_title']
-    if request.method == 'POST':
-        if form.validate():
-            if challenges_registration.main(company, month, code, form):
-                return render_template(CHALLENGES_REGISTRATION[company][month]['registration_confirmation'],
-                                       page_title=page_title)
-            else:
-                return render_template('failed.html', page_title=page_title)
-
-    challenges_registration_page = CHALLENGES_REGISTRATION[company][month]['registration']
-    return render_template(challenges_registration_page, form=form, page_title=page_title)
+# @app.route("/registration/challenges/<company>/<month>/<code>", methods=['GET', 'POST'])
+# @execution_time
+# def challenges_register(company, month, code):
+#     logging.info("Registration - Company: %s | Month: %s", company, month)
+#     form = CHALLENGES_REGISTRATION[company][month]['form'](request.form)
+#     page_title = CHALLENGES_REGISTRATION[company][month]['page_title']
+#     if request.method == 'POST':
+#         if form.validate():
+#             if challenges_registration.main(company, month, code, form):
+#                 return render_template(CHALLENGES_REGISTRATION[company][month]['registration_confirmation'],
+#                                        page_title=page_title)
+#             else:
+#                 return render_template('failed.html', page_title=page_title)
+#
+#     challenges_registration_page = CHALLENGES_REGISTRATION[company][month]['registration']
+#     return render_template(challenges_registration_page, form=form, page_title=page_title)
 
 
 if __name__ == '__main__' and __package__ is None:
