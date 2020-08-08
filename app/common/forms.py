@@ -17,7 +17,6 @@ class RegistrationFormCadence90Odd(Form):
 class RegistrationFormCadence90Even(Form):
     phone = StringField('Phone Number:', validators=[validators.DataRequired(), Length(min=6, max=15)])
     email = EmailField('Email ID:', validators=[validators.DataRequired(), validators.Email()])
-    address = TextAreaField('Postal Address:', validators=[validators.DataRequired()])
 
 
 class RegistrationFormBoschOdd(Form):
