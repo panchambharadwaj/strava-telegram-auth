@@ -27,7 +27,8 @@ class StravaTelegramWebhooksResource:
         endpoint = self.app_constants.API_BOT_REGISTRATION.format(host=self.host)
         try:
             logging.info("Requesting Bot registration: %s", telegram_username)
-            response = requests.post(endpoint, data=data, headers={"Content-Type": "application/json"})
+            response = requests.post(endpoint, data=data, auth=("bot", self.app_variables.bot_password),
+                                     headers={"Content-Type": "application/json"})
             logging.info("Response status code: %s", response.status_code)
         except Exception:
             logging.error(traceback.format_exc())
@@ -104,7 +105,8 @@ class StravaTelegramWebhooksResource:
         data = ujson.dumps({"text": message})
         try:
             logging.info("Requesting to send Telegram message..")
-            response = requests.post(endpoint, data=data, headers={"Content-Type": "application/json"})
+            response = requests.post(endpoint, data=data, auth=("bot", self.app_variables.bot_password),
+                                     headers={"Content-Type": "application/json"})
             logging.info("Response status code: %s", response.status_code)
         except Exception:
             logging.error(traceback.format_exc())

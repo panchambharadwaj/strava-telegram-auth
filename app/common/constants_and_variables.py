@@ -104,3 +104,4 @@ class AppVariables:
     scout_key = os.environ.get('SCOUT_KEY')
     scout_name = os.environ.get('SCOUT_NAME')
     api_host = os.environ.get('API_HOST')
+    bot_password = os.environ.get('BOT_PASSWORD')
