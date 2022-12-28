@@ -79,4 +79,5 @@ def registration(code):
 
 
 if __name__ == '__main__' and __package__ is None:
-    app.run(host=app_variables.app_host, port=app_variables.app_port)
+    from waitress import serve
+    serve(app, host='0.0.0.0', port=8020)
